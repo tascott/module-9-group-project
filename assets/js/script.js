@@ -11,10 +11,13 @@ $.ajax({
     let articles = response.articles
     $(articles).each(function(){
         console.log($(this)[0].url)
+        let url = $(this)[0].url
+        $('#results').append(`<p>${url}</p>`)
     })
     let website_to_scrape = articles[5].url.slice(0,-5)
     let scrapingUrl = `http://api.scraperapi.com?api_key=${scraping_api_key}&url=${website_to_scrape}`
     //console.log(website_to_scrape)
+    
     $.ajax({
         url: scrapingUrl, 
         method: "GET"
