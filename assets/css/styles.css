@@ -1,43 +1,72 @@
+:root {
+  --primary-color: rgb(235, 166, 55);
+  --primary-dark: rgb(166, 107, 90);
+  --background: rgb(247, 243, 213); }
+
 * {
-  box-sizing: border;
-}
+  box-sizing: border-box; }
 
 html {
   overflow-y: scroll;
-  overflow-x: hidden;
-}
+  overflow-x: hidden; }
+
+body {
+  font-family: 'Merriweather', serif;
+  background-color: var(--background); }
+
+.jumbotron {
+  background: linear-gradient(90deg, rgba(252, 0, 0, 0) 0%, #eba63a 100%), url("../images/train-wide.png");
+  background-size: cover;
+  background-position: center;
+  margin-right: -15px;
+  margin-left: -15px;
+  padding: 40px 40px 40px 35%;
+  min-height: 400px;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; }
+
+.jumbotron h1 {
+  font-weight: 700;
+  padding-bottom: 10px; }
 
 .outer-wrapper {
-  background-color: yellow;
   width: 100vw;
-  height: 100vh;
-}
+  height: 100vh; }
 
 header {
   font-size: 34px;
-  margin: 10px;
-}
+  margin: 10px; }
 
-.search-button-div {
-  position: relative;
-  top: 27px;
-  right: 60px;
-}
+.search-input {
+  padding: 20px 0; }
+
+.search-input .destination, .search-input .time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; }
+
+.section {
+  padding: 20px 40px; }
 
 .search-button {
-  width: 10em;
-  height: 5em;
-  border-radius: 50%;
-}
+  border-radius: 5px;
+  min-width: 50px;
+  width: fit-content; }
 
-.suggestions {
-  width: 50%;
-}
+#suggestions label {
+  font-size: 20px;
+  font-weight: 700;
+  padding-bottom: 10px; }
+
+.results-row {
+  background-color: var(--primary-dark); }
 
 #results {
   background-color: orange;
   height: 600px;
-  margin-top: 40px;
-}
+  margin-top: 40px; }
 
 /*# sourceMappingURL=styles.css.map */
