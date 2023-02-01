@@ -1,1 +1,0 @@
-var news_api_key = "148a409e7554472db93a137acab56483"
