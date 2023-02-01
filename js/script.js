@@ -8,11 +8,15 @@ $.ajax({
     "X-Api-Key": news_api_key,
     method: "GET"
 }).then(function(response){
-    $(response).each(function(){
-        console.log($(this)[0].articles)
+    let articles = response.articles
+   // console.log(articles)
+    $(articles).each(function(){
+        console.log($(this)[0].url)
     })
 })
 
+
+let scrapingUrl = "http://api.scraperapi.com?api_key=ee598a5176bcff8a001430785a2c2f13&url=http://httpbin.org/ip""
 $.ajax({
 
 })
