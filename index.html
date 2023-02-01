@@ -13,30 +13,41 @@
 <body>
     <div class="container-fluid outer-wrapper">
         <header>Commute Things</header>
-        <div class="container-fluid">
-            <div class="col-4">
-            <div class="row">
-                <div class="col-8 search-input-div">
-                <label for="search-by-time-input">Search By Time</label>
-                <input type="text" id="search-by-time-input"/>
-                <label for="search-by-destination-input">Search By Destination</label>
-                <input type="text" id="search-by-destination-input"/>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-8 search-input-div">
+                                <label for="search-by-time-input" placeholder="60 minutes">Search By Time</label>
+                                <input type="text" id="search-by-time-input"/>
+                                <label for="search-by-destination-input">Search By Destination</label>
+                                <input type="text" id="search-by-destination-input-start" placeholder="start"/>
+                                <input type="text" id="search-by-destination-end" placeholder="end"/>
+                            </div>
+                            <div class="col-4 search-button-div">
+                                <button type="button" class="btn btn-primary search-button">Search</button>
+                            </div>
+                        </div>
+                    </div>
+              
+                    <div class="col-8">
+                        <div id="suggestions"class="row suggestions-row">
+                            <label for="suggestion-text" placeholder="music">Enter a topic:</label>
+                            <input type="text" id="suggestion-text">
+                        </div>
+                        <button type="button" class="btn suggest-button btn-outline">Suggestion 1</button>
+                        <button type="button" class="btn suggest-button btn-outline">Suggestion 2</button>
+                        <button type="button" class="btn suggest-button btn-outline">Suggestion 3</button>
+                    </div>
                 </div>
-                <div class="col-4 search-button-div">
-                    <button type="button" class="btn btn-primary search-button">Search</button>
+              
+                <div class="row results-row">
+                    <div class="container-fluid">
+                        <div id="results">
+                            Results go here 
+                        </div>
+                    </div> 
                 </div>
-            </div>
-            </div>
-            <div class="col-8">
-
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 class="display-4">Fluid jumbotron</h1>
-            <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
-        </div>
-    </div>
-
-
             </div>
         </div>
     </div>

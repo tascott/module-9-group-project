@@ -30,4 +30,14 @@ header {
   border-radius: 50%;
 }
 
+.suggestions {
+  width: 50%;
+}
+
+#results {
+  background-color: orange;
+  height: 600px;
+  margin-top: 40px;
+}
+
 /*# sourceMappingURL=styles.css.map */
