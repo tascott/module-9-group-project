@@ -8,9 +8,11 @@ $.ajax({
     "X-Api-Key": news_api_key,
     method: "GET"
 }).then(function(response){
-    console.log(response)
+    $(response).each(function(){
+        console.log($(this)[0].articles)
+    })
 })
 
 $.ajax({
-    
+
 })
