@@ -9,14 +9,20 @@ $.ajax({
     method: "GET"
 }).then(function(response){
     let articles = response.articles
-   // console.log(articles)
     $(articles).each(function(){
         console.log($(this)[0].url)
     })
-})
+    let website_to_scrape = articles[5].url.slice(0,-5)
+    let scrapingUrl = `http://api.scraperapi.com?api_key=${scraping_api_key}&url=${website_to_scrape}`
+    //console.log(website_to_scrape)
+    $.ajax({
+        url: scrapingUrl, 
+        method: "GET"
+
+    }).then(function(response){
+        //console.log(response)
+    })
+    })
 
 
-let scrapingUrl = "http://api.scraperapi.com?api_key=ee598a5176bcff8a001430785a2c2f13&url=http://httpbin.org/ip""
-$.ajax({
 
-})

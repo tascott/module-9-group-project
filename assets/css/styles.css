@@ -1,4 +1,33 @@
 * {
-  box-sizing: border; }
+  box-sizing: border;
+}
+
+html {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.outer-wrapper {
+  background-color: yellow;
+  width: 100vw;
+  height: 100vh;
+}
+
+header {
+  font-size: 34px;
+  margin: 10px;
+}
+
+.search-button-div {
+  position: relative;
+  top: 27px;
+  right: 60px;
+}
+
+.search-button {
+  width: 10em;
+  height: 5em;
+  border-radius: 50%;
+}
 
 /*# sourceMappingURL=styles.css.map */
