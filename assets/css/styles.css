@@ -70,7 +70,8 @@ header {
 
 #suggestions {
   max-width: 400px;
-  margin: 0 auto; }
+  margin: 0 auto;
+}
 
 #suggestions label {
   font-size: 20px;
@@ -79,7 +80,8 @@ header {
 }
 
 #suggestions input {
-  margin-bottom: 10px; }
+  margin-bottom: 10px;
+}
 
 .results-row {
   background-color: var(--primary-dark);
@@ -93,13 +95,15 @@ header {
 
 #suggestion-results {
   display: flex;
-  justify-content: center; }
+  justify-content: center;
+}
 
 .badge {
   background-color: var(--primary-dark);
   color: white;
   font-size: 15px;
   margin: 10px;
-  padding: 8px; }
+  padding: 8px;
+}
 
 /*# sourceMappingURL=styles.css.map */
