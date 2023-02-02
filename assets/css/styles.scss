@@ -1,41 +1,91 @@
+:root {
+    --primary-color: rgb(235, 166, 55);
+    --primary-dark: rgb(166, 107, 90);
+    --background: rgb(247, 243, 213);
+}
 *{
-    box-sizing: border;
+    box-sizing: border-box;
 }
 
-html{
+html {
     overflow-y: scroll;
     overflow-x: hidden;
 }
 
-.outer-wrapper{
-    background-color: yellow;
+body {
+    font-family: 'Merriweather', serif;
+    background-color: var(--background);
+}
+
+.jumbotron {
+    background: linear-gradient(90deg, rgba(252, 0, 0, 0) 0%, rgba(235, 166, 58, 1) 100%), url("../images/train-wide.png");
+    background-size: cover;
+    background-position: center;
+    margin-right: -15px;
+    margin-left: -15px;
+    padding: 40px 40px 40px 35%;
+    min-height: 400px;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.jumbotron h1 {
+    font-weight: 700;
+    padding-bottom: 10px;
+}
+
+.outer-wrapper {
     width: 100vw;
     height: 100vh;
 }
 
-header{
+header {
     font-size: 34px;
     margin: 10px;
 }
 
-.search-button-div{
-    position: relative;
-    top: 27px;
-    right: 60px;
+.search-input {
+    padding: 20px 0;
 }
 
+// .search-input .time {
+//     padding: 20px 0;
+// }
 
-.search-button{
-    width: 10em;
-    height: 5em;
-    border-radius: 50%;
+.search-input .destination, .search-input .time {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.suggestions{
-    width: 50%;
+.section {
+    padding: 20px 40px;
 }
 
-#results{
+.search-button {
+    border-radius: 5px;
+    min-width: 50px;
+    width: fit-content;
+}
+
+// .suggestions {
+//     background: linear-gradient(180deg, rgba(247, 243, 213, 0) 0%, rgba(166, 107, 90, 1) 100%)
+// }
+
+#suggestions label {
+    font-size: 20px;
+    font-weight: 700;
+    padding-bottom: 10px;
+}
+
+.results-row {
+    background-color: var(--primary-dark);
+}
+
+#results {
     background-color: orange;
     height: 600px;
     margin-top: 40px;
