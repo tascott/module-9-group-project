@@ -92,14 +92,15 @@ $.ajax({
     }
 }).then(function(response){
     let articles = response.articles
-    $(articles).each(function(){
-       // console.log($(this)[0].url)
-        let url = $(this)[0].url
-        $('#results').append(`<p>${url}</p>`)
-    })
-    let website_to_scrape = articles[5].url.slice(0,-5)
-    let scrapingUrl = `http://api.scraperapi.com?api_key=${scraping_api_key}&url=${website_to_scrape}`
-    //console.log(website_to_scrape)
+    let url;
+    //console.log(articles
+    for(let i = 0; i < 20; i++)
+    {
+        url = articles[i].url
+        
+        $('#news-results').append(`<p>${url}</p>`)
+    }
+ 
     
     $.ajax({
         url: scrapingUrl, 
