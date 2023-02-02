@@ -27,8 +27,8 @@ $('#search-button').click(function(){
             url:`https://api.ipdata.co?api-key=${ip_data_api_key}`,
             method: "GET", 
             success: function(response){
-                 lat = response.latitude.toFixed(6)
-                 lon = response.longitude.toFixed(6)
+                 lat = response.latitude
+                 lon = response.longitude
                 return [lat, lon]
             }
         })
@@ -36,18 +36,19 @@ $('#search-button').click(function(){
  
     console.log([lat,lon])
  if(lat && lon){
+    let response =  fetch('https://api.external.citymapper.com/api/',{
+        method:"GET",
+        mode: 'no-cors',
+        start: [lat, lon],
+    
+        
+     }).then(function(response){
+        console.log(response)
+     })
   
  }
 
- let response =  fetch('https://api.external.citymapper.com/api/',{
-    method:"GET",
-    mode: 'no-cors',
-    start: [lat, lon],
 
-    
- }).then(function(response){
-    console.log(response)
- })
 
 
    
