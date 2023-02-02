@@ -103,8 +103,7 @@ $.ajax({
         let url = $(this)[0].url
         $('#results').append(`<p>${url}</p>`)
     })
-    let website_to_scrape = "https://www.nytimes.com/2020/09/02/opinion/remote-learning-coronavirus.html?action=click&module=Opinion&pgtype=Homepage"
-    articles[5].url.slice(0,-5)
+    let website_to_scrape = articles[5].url.slice(0,-5)
     let scrapingUrl = `http://api.scraperapi.com?api_key=${scraping_api_key}&url=${website_to_scrape}`
     //console.log(website_to_scrape)
     

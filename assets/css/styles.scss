@@ -71,9 +71,10 @@ header {
     width: fit-content;
 }
 
-// .suggestions {
-//     background: linear-gradient(180deg, rgba(247, 243, 213, 0) 0%, rgba(166, 107, 90, 1) 100%)
-// }
+#suggestions {
+    max-width: 400px;
+    margin: 0 auto;
+}
 
 #suggestions label {
     font-size: 20px;
@@ -81,12 +82,29 @@ header {
     padding-bottom: 10px;
 }
 
+#suggestions input {
+    margin-bottom: 10px;
+}
+
 .results-row {
     background-color: var(--primary-dark);
 }
 
-#results {
+#news-results {
     background-color: orange;
     height: 600px;
     margin-top: 40px;
+}
+
+#suggestion-results {
+    display: flex;
+    justify-content: center;
+}
+
+.badge {
+    background-color: var(--primary-dark);
+    color: white;
+    font-size: 15px;
+    margin: 10px;
+    padding: 8px;
 }

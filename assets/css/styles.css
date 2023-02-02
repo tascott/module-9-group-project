@@ -68,20 +68,42 @@ header {
   width: fit-content;
 }
 
+#suggestions {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
 #suggestions label {
   font-size: 20px;
   font-weight: 700;
   padding-bottom: 10px;
 }
 
+#suggestions input {
+  margin-bottom: 10px;
+}
+
 .results-row {
   background-color: var(--primary-dark);
 }
 
-#results {
+#news-results {
   background-color: orange;
   height: 600px;
   margin-top: 40px;
+}
+
+#suggestion-results {
+  display: flex;
+  justify-content: center;
+}
+
+.badge {
+  background-color: var(--primary-dark);
+  color: white;
+  font-size: 15px;
+  margin: 10px;
+  padding: 8px;
 }
 
 /*# sourceMappingURL=styles.css.map */
