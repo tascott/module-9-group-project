@@ -2,6 +2,7 @@
 let newsQueryUrl = `https://newsapi.org/v2/everything?q=keyword&apiKey=${news_api_key}`
 let geoLocationApi 
 let use_location = $('#use-location').val()
+console.log(use_location)
 let lat, lon
 let cityMapperUrl = `https://api.external.citymapper.com/api/1/traveltimes`
 $('#search-button').click(function(){
@@ -22,11 +23,12 @@ $('#search-button').click(function(){
         }
         return transportMethod
     })
-    if(use_location==true){
+    if(use_location=='on'){
         $.ajax({
             url:`https://api.ipdata.co?api-key=${ip_data_api_key}`,
             method: "GET", 
             success: function(response){
+                console.log(response)
                  lat = response.latitude
                  lon = response.longitude
                 return [lat, lon]
