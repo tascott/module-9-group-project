@@ -30,18 +30,33 @@
         <div class="row section">
             <div class="col-sm-12">
                 <div class="row search-input">
-                    <div class="col-sm-6 time">
+                    <div class="col-sm-4 time">
                         <label for="search-by-time-input" placeholder="60 minutes">Search By Time</label>
                         <input type="text" id="search-by-time-input" />
                     </div>
-                     <div class="col-sm-6 destination">
+                     <div class="col-sm-4 destination">
                         <label for="search-by-destination-input">Search By Destination</label>
-                        <input type="text" id="search-by-destination-input-start" placeholder="start" />
-                        <input type="text" id="search-by-destination-end" placeholder="end" />
+                        <input type="text" id="destination-start" placeholder="start" />
+                        <input type="text" id="destination-end" placeholder="end" />
+                        <input type="checkbox" id="use-location" name="use-location">
+                        <label for="use-location">Use Location</label>
+                    </div>
+                    <div class="col-sm-4 transport">
+                        <h6>Method of Transport</h6>
+                        <form id="transport-form">
+                            <label for="tube">Tube</label>
+                            <input type="checkbox" id="tube" name="tube">
+                            <label for="car">Car</label>
+                            <input type="checkbox" id="car" name="car">
+                            <label for="bus">Bus</label>
+                            <input type="checkbox" id="bus" name="bus">
+                            <label for="walk">Walk</label>
+                            <input type="checkbox" id="walk" name="walk">
+                        </form>
                     </div>
                 </div>
                  <div class="row d-flex justify-content-center">
-                    <button type="button" class="btn btn-primary search-button">Confirm Journey Time</button>
+                    <button id="search-button" type="button" class="btn btn-primary search-button">Confirm Journey Time</button>
                  </div>
             </div>
         </div>
@@ -60,7 +75,6 @@
         <div class="row section results-row">
             <div class="container-fluid">
                 <div id="results">
-                    Results go here
                 </div>
             </div>
         </div>
