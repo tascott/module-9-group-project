@@ -2,7 +2,8 @@
 let newsQueryUrl = `https://newsapi.org/v2/everything?q=keyword&apiKey=${news_api_key}`
 let geoLocationApi 
 let use_location = $('#use-location').val()
-let lat, lon
+let lat, lon, start
+let end
 let cityMapperUrl = `https://api.external.citymapper.com/api/1/traveltimes`
 $('#search-button').click(function(){
     let searchTime = $('#search-by-time-input').val()
@@ -21,50 +22,45 @@ $('#search-button').click(function(){
         }
         return transportMethod
     })
+
+  
     if(use_location=='on'){
         $.ajax({
             url:`https://api.ipdata.co?api-key=${ip_data_api_key}`,
             method: "GET", 
             success: function(response){
-                 lat = response.latitude
-                 lon = response.longitude
-                 let start = [lat,lon]
-                 let cityQuery =  fetch(`https://api.external.citymapper.com/api/1/traveltimes/`,{
+                    lat = response.latitude
+                    lon = response.longitude
+                    start = [lat,lon]
+                    console.log(start)
+                    let cityQuery =  fetch(`https://api.external.citymapper.com/api/1/traveltimes/`,{
                     method:"GET",
                     mode: 'no-cors',
-                    start: [lat, lon],
-                    end: destinationEnd, 
+                    start: start,
+                    end: [51.559098,0.074503], 
                     traveltime_type: transportMethod
                 
-                 }).then(function(cityQuery){
+                 })
+                 .then(function(cityQuery){
                     console.log(cityQuery)
+                 })
+                 .catch(function(err){
+                    console.log(err)
                  })
             }
         })
     }
  
    
- if(lat && lon){
-  
-  
- }
-
-
-
-
-   
-
-
- 
-    // pass to city mapper
-    //get time of journey 
 
      
 })
 
 
+
 // This is a call using the ip data api it's not that accurate
 //But good for a small project
+
 
 
 $('#search-button').click(function(){
@@ -89,31 +85,21 @@ $('#search-button').click(function(){
      //   console.log(response)
    // }
 // })
+
+
 $.ajax({
     url: newsQueryUrl,
     "X-Api-Key": news_api_key,
     method: "GET", 
     success:function(response){
-        let articles = response.articles
+        let articles = response.articles.slice(0,9)
+        $(articles).each(function(){
+            let url = $(this)[0].url
+            $('#news-results').append(`<p>${url}</p>`)
+        })
+      
+    },
+    error: function(err){
+        console.log(err)
     }
-}).then(function(response){
-    let articles = response.articles
-    $(articles).each(function(){
-       // console.log($(this)[0].url)
-        let url = $(this)[0].url
-        $('#results').append(`<p>${url}</p>`)
-    })
-    let website_to_scrape = articles[5].url.slice(0,-5)
-    let scrapingUrl = `http://api.scraperapi.com?api_key=${scraping_api_key}&url=${website_to_scrape}`
-    //console.log(website_to_scrape)
-    
-    $.ajax({
-        url: scrapingUrl, 
-        method: "GET"
-
-    }).then(function(response){
-        //console.log(response)
-        //console.log(scrap(response))
-    })
-    })
-
+})
