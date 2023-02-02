@@ -29,10 +29,12 @@ $('#search-button').click(function(){
                  lat = response.latitude
                  lon = response.longitude
                  let start = [lat,lon]
-                 let cityQuery =  fetch(`https://api.external.citymapper.com/api/1/traveltimes/start=${start},end=${destinationEnd},traveltime_type=${transportMethod}`,{
+                 let cityQuery =  fetch(`https://api.external.citymapper.com/api/1/traveltimes/`,{
                     method:"GET",
                     mode: 'no-cors',
                     start: [lat, lon],
+                    end: destinationEnd, 
+                    traveltime_type: transportMethod
                 
                  }).then(function(cityQuery){
                     console.log(cityQuery)
