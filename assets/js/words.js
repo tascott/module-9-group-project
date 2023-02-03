@@ -37,10 +37,10 @@ searchButton.on('click', function (e) {
     console.log(searchValue);
 
     //uncomment after first result
-    // getRelatedWordsFromLocalStorage(searchValue);
+    getRelatedWordsFromLocalStorage(searchValue);
 
     //comment out after first result
-    getRelatedWords(searchValue);
+    // getRelatedWords(searchValue);
 });
 
 renderSuggestedResponses = function () {
