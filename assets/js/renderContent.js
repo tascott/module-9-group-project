@@ -165,7 +165,6 @@ renderNews(exampleData);
 
 var articleModal = document.getElementById('article-modal')
 articleModal.addEventListener('show.bs.modal', function (event) {
-    document.body.style.overflow = 'hidden';
     // Button that triggered the modal
     var button = event.relatedTarget
     // Extract info from data-bs-* attributes
@@ -186,7 +185,3 @@ articleModal.addEventListener('show.bs.modal', function (event) {
     modalBodyInput.textContent = content
     modalAuthor.textContent = author
 })
-
-$(articleModal).on("hidden.bs.modal", function () {
-    document.body.style.overflow = 'auto';
-});
