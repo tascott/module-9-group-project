@@ -93,7 +93,11 @@
 
                 </div>
                 <div class="row" id="video-results">
-
+                    <div id="floating-panel">
+                        <input id="latlng" type="text" value="40.714224,-73.961452" />
+                        <input id="submit" type="button" value="Reverse Geocode" />
+                    </div>
+                <div id="map"></div>
                 </div>
 
                  <div class="row" id="blog-results">
@@ -117,8 +121,21 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div id="floating-panel">
+                <strong>Start:</strong>
+                <select id="start">
+                    <option value="e17 4sr">Chicago</option>
+                </select>
+                <br>
+                <strong>End:</strong>
+                <select id="end">
+                    <option value="vauxhall station" selected="selected">St Louis</option>
+                </select>
+            </div>
+            <div id="right-panel"></div>
+        </div>
     </div>
-
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
@@ -131,6 +148,11 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="assets/js/keys.js"></script>
     <script src="assets/js/words.js"></script>
+    <script src="assets/js/g-c-maps.js"></script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdWjXYYmyEctduqjw4J8BTYuYDlLxOjm4&callback=initMap">
+    </script>
+
     <script src="assets/js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
