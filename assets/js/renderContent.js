@@ -1,5 +1,40 @@
-// Get content from Medium API and save to local storage
+// Show an indicator that the user is online or offline
 
+window.addEventListener("load", () => {
+    hasNetwork(navigator.onLine);
+
+    window.addEventListener("online", () => {
+        // Set hasNetwork to online when they change to online.
+        hasNetwork(true);
+    });
+
+    window.addEventListener("offline", () => {
+        // Set hasNetwork to offline when they change to offline.
+        hasNetwork(false);
+    });
+});
+
+
+function hasNetwork(online) {
+    const element = $(".status");
+    // Update the DOM to reflect the current status
+    if (online) {
+        let html = `<i class="bi bi-circle-fill"></i> Online`;
+        element.removeClass("offline");
+        element.addClass("online");
+        element.html(html);
+        $('.results-row').removeClass('offline');
+    } else {
+        let html = `<i class="bi bi-circle-fill"></i> Offline`;
+        element.removeClass("online");
+        element.addClass("offline");
+        element.html(html);
+         $('.results-row').addClass('offline');
+    }
+}
+
+
+// Get content from Medium API and save to local storage
 const options = {
     method: 'GET',
     headers: {
@@ -66,6 +101,12 @@ let newsDiv = $('#news-results');
 let videoDiv = $('#video-results');
 let blogDiv = $('#blog-results');
 let exampleData = {
+    "journeyTime": 45,
+    "tags": [
+        "technology",
+        "science",
+        "health"
+    ],
     "articles": [
         {
             title: "Example title 1",
@@ -85,12 +126,12 @@ let exampleData = {
     ],
     "videos": [
         {
-            title: "Example title 1",
-            url: "https://www.example.com"
+            title: "Example title",
+            id: "bMLbnsKGRfo"
         },
         {
             title: "Example title 2",
-            url: "https://www.example.com"
+            id: "yi-h5hNzTVw"
         },
     ],
     "blogs": [
@@ -108,11 +149,29 @@ let exampleData = {
         },
     ]
 }
+let searchTerm = 'iphone'; // this will be the user's search term which is saved to local storage and the object above
 
-function renderNews(data) {
-    console.log(data)
-    let time = 45;
-    $('.results-row').prepend(`<h2>Your results for ${time} minute journey</h2>`);
+// fetch from youtube api
+// fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${searchTerm}&type=video&key=${gmaps_api_key}`)
+//     .then(response => response.json())
+//     .then(function (response) {
+//         console.log(response);
+//     });
+
+//this embeds the youtube video, no api needed for this part
+
+let embeddedYouTubeHTML = function (id) {
+    return `<iframe width="360" height="" src="https://www.youtube.com/embed/${id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
+};
+
+
+function renderContent(data) {
+    // Below variable will change to the time the user selects (from local storage)
+    $('.results-row').prepend(`<h2 class="journey-time">Your results for a ${exampleData.journeyTime} minute journey</h2><h6 class="tags">Your tags:</h6><h5 class="status"></h5><br>`);
+    // make pill tags for each tag
+    exampleData.tags.forEach(function (tag) {
+         $('.tags').append(`<span class="badge bg-primary-dark" style="width: fit-content">${tag}</span>`)
+     });
     let html = '';
     data.articles.forEach(function (article) {
         html += `
@@ -131,14 +190,7 @@ function renderNews(data) {
     // render videos
     html = '';
     data.videos.forEach(function (video) {
-        html += `
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">${video.title}</h5>
-                <a href="${video.url}" class="btn btn-primary">Watch</a>
-            </div>
-        </div>
-        `
+        html += embeddedYouTubeHTML(video.id);
     });
     videoDiv.html(html);
     videoDiv.prepend(`<h2>Videos</h2>`);
@@ -146,7 +198,6 @@ function renderNews(data) {
     html = '';
     data.blogs.forEach(function (blog) {
         blog.content = JSON.parse(localStorage.getItem('86e6818a050d')).content;
-        console.log(blog.content);
         html += `
         <div class="card">
             <div class="card-body">
@@ -161,7 +212,7 @@ function renderNews(data) {
     blogDiv.prepend(`<h2>Blogs</h2><h6>Available offline</h6>`);
 }
 
-renderNews(exampleData);
+renderContent(exampleData);
 
 var articleModal = document.getElementById('article-modal')
 articleModal.addEventListener('show.bs.modal', function (event) {
@@ -182,6 +233,6 @@ articleModal.addEventListener('show.bs.modal', function (event) {
 
     modalUrl.attributes.href.value = url;
     modalTitle.textContent = title;
-    modalBodyInput.textContent = content
+    $(modalBodyInput).html(content.replace(/(?:\r\n|\r|\n)/g, '<br>'));
     modalAuthor.textContent = author
 })
