@@ -6,8 +6,7 @@ let lat, lon, start
 let end
 let cityMapperUrl = `https://api.external.citymapper.com/api/1/traveltimes`
 
-let interests = [];
-let interestContainer = $('#suggestion-results');
+
 let searchButton = $('#suggestion-button');
 let searchBox = $('#suggestion-text');
 
@@ -62,42 +61,7 @@ $('#search-button').click(function(e){
 
  
 
-    function getRelatedWords(searchValue) {
-        const options = {
-            method: 'GET',
-            headers: {
-                'X-RapidAPI-Key': words_api_key,
-                'X-RapidAPI-Host': 'wordsapiv1.p.rapidapi.com'
-            }
-        };
     
-        //other options: pertainsTo hasTypes similarTo synonyms
-        //get synonyms for this word
-        fetch('https://wordsapiv1.p.rapidapi.com/words/' + searchValue + '/hasTypes', options)
-            .then(response => response.json())
-            .then(function (response) {
-                console.log(response)
-                interests = response.hasTypes.sort(() => Math.random() - 0.5).slice(0, 5);
-                localStorage.setItem('interests', JSON.stringify(interests));
-                renderSuggestedResponses();
-            })
-            .catch(err => console.error(err));
-    }
-    
-    function getRelatedWordsFromLocalStorage(searchValue) {
-        interests = JSON.parse(localStorage.getItem('interests'));
-        renderSuggestedResponses();
-    }
-
-    var searchValue = searchBox.val();
-    console.log(searchValue);
-
-    //uncomment after first result
-     getRelatedWordsFromLocalStorage(searchValue);
-
-    //comment out after first result
-    getRelatedWords(searchValue);
-
     
 
 
@@ -105,13 +69,7 @@ $('#search-button').click(function(e){
 
 })
 
-function renderSuggestedResponses() {
-    console.log(interests);
-    interestContainer.empty();
-    interests.forEach(function (interest) {
-        interestContainer.append(`<div data-interest="${interest}"><span class=" interest badge badge-pill badge-primary">${interest}</span></div>`);
-    });
-}
+
 let origins = "Washington%2C%20DC"
 let destinations = "New%20York%20City%2C%20NY"
 // $.ajax({
@@ -134,7 +92,7 @@ console.log(JSON.stringify($(maps_api)))
 
 
 
-console.log(response)
+console.log(maps_api)
 // TIME
 // let timeTravelApi = " https://api.traveltimeapp.com/v4/time-filter"
 // let locations

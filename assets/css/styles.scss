@@ -70,10 +70,10 @@ header {
     padding: 20px 40px;
 }
 
-.search-button {
+#search-button {
     border-radius: 5px;
-    min-width: 50px;
-    width: fit-content;
+    min-width: 100%;
+    width: 100%;
 }
 
 #suggestions {
