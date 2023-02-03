@@ -22,10 +22,14 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
     }, function (response, status) {
         if (status === google.maps.DirectionsStatus.OK) {
             console.log(response)
-            directionsDisplay.setDirections(response);
+            googleMapsResponse = response
+            return googleMapsResponse
         } else {
             window.alert('Directions request failed due to ' + status);
         }
+        return googleMapsResponse
     });
+
 }
 google.maps.event.addDomListener(window, "load", initMap);
+
