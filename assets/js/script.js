@@ -1,19 +1,27 @@
-//console.log(news_api_key)
+// Inital variables
 let newsQueryUrl = `https://newsapi.org/v2/everything?q=keyword&apiKey=${news_api_key}`
 let geoLocationApi 
 let use_location = $('#use-location').val()
-console.log(use_location)
-let lat, lon
+let lat, lon, start
+let end
 let cityMapperUrl = `https://api.external.citymapper.com/api/1/traveltimes`
-$('#search-button').click(function(){
+
+
+let searchButton = $('#suggestion-button');
+let searchBox = $('#suggestion-text');
+
+// Search button on click
+$('#search-button').click(function(e){
+    e.preventDefault();
+    console.log('hello')
+
     let searchTime = $('#search-by-time-input').val()
     let destinationStart = $('#destination-start').val()
     let destinationEnd = $('#destination-end').val()
     let transportForm = $('#transport-form').find("input")
     let transportMethod
-    if(searchTime && destinationStart || destinationEnd)
+    if(searchTime && destinationStart)
     {
-        destinationEnd = null
         destinationStart = null
     }
     transportForm.each(function(){
@@ -23,93 +31,71 @@ $('#search-button').click(function(){
         }
         return transportMethod
     })
+
+  
     if(use_location=='on'){
         $.ajax({
             url:`https://api.ipdata.co?api-key=${ip_data_api_key}`,
             method: "GET", 
             success: function(response){
-                console.log(response)
-                 lat = response.latitude
-                 lon = response.longitude
-                return [lat, lon]
-            }
-        })
+                    lat = response.latitude
+                    lon = response.longitude    
+                 }})
     }
- 
-    console.log([lat,lon])
- if(lat && lon){
-    let response =  fetch('https://api.external.citymapper.com/api/',{
-        method:"GET",
-        mode: 'no-cors',
-        start: [lat, lon],
-    
-        
-     }).then(function(response){
-        console.log(response)
-     })
-  
- }
-
-
-
-
    
 
-
  
-    // pass to city mapper
-    //get time of journey 
 
-     
+    
+    
+
+
+
+
 })
 
 
-// This is a call using the ip data api it's not that accurate
-//But good for a small project
-
-
-
-
-//$.ajax({
-  //  url: cityMapperUrl, 
-   // method: "GET", 
-  //  start: [lat.toFixed(6), lon.toFixed(6)],
-   // crossDomain: true,
-    //headers: {
-     //   "Citymapper-Partner-Key": city_mapper_api_key
-   // },
-    //traveltime_type: transportMethod,
-    //success: function(response){
-     //   console.log(response)
-   // }
+let origins = "Washington%2C%20DC"
+let destinations = "New%20York%20City%2C%20NY"
+// $.ajax({
+//     method: "GET",
+//     url: `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origins}&destinations=${destinations}&units=imperial&key=${google_maps_api_key}`,
+//     headers: {},
+//     success: function(response){
+//         console.log(response)
+//     }
 // })
-$.ajax({
-    url: newsQueryUrl,
-    "X-Api-Key": news_api_key,
-    method: "GET", 
-    success:function(response){
-        let articles = response.articles
-    }
+let maps_api = fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origins}&destinations=${destinations}&units=imperial&key=${google_maps_api_key}`, {
+    method: "GET",
+    withCredentials: true,
+    crossorigin: true,
+    mode:'no-cors', 
 }).then(function(response){
-    let articles = response.articles
-    let url;
-    //console.log(articles
-    for(let i = 0; i < 20; i++)
-    {
-        url = articles[i].url
-        
-        $('#news-results').append(`<p>${url}</p>`)
-    }
- 
+    console.log(JSON.stringify(response))
+})
+console.log(JSON.stringify($(maps_api)))
+
+
+
+console.log(maps_api)
+// TIME
+// let timeTravelApi = " https://api.traveltimeapp.com/v4/time-filter"
+// let locations
+// $.ajax({
+//     method: "GET",
+//     url: timeTravelApi, 
+//     "type": 'walking', 
+//     "search_lat": parseFloat(51.5007), 
+//     "search_lon": parseFloat(0.1246), 
+//     "locations": "51.4995_0.1248",
+//     "app_id": "87a122be",
+//     "api_key": "ecf4dd6b0ede919a80eea9281fb1c1bf", 
+//     success: function(response){
+//         console.log(response)
+//     }
+
+
     
-    $.ajax({
-        url: scrapingUrl, 
-        method: "GET"
-
-    }).then(function(response){
-        //console.log(response)
-    })
-    })
-
+// })
 
 

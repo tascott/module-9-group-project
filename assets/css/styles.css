@@ -1,31 +1,30 @@
 :root {
-
   --primary-color: #EBA943;
   --secondary-color: #4385EB;
   --primary-dark: #EB5543;
   --background: #fff;
-  --box-background: #348aa7; }
-
-  
-
+  --box-background: #348aa7;
+}
 
 * {
-  box-sizing: border-box; }
+  box-sizing: border-box;
+}
 
 html {
   overflow-y: scroll;
-  overflow-x: hidden; }
+  overflow-x: hidden;
+}
 
 body {
-  font-family: 'Merriweather', serif;
-  background-color: var(--background); }
+  font-family: "Merriweather", serif;
+  background-color: var(--background);
+}
 
 .jumbotron {
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, white 100%), linear-gradient(90deg, rgba(252, 0, 0, 0) 0%, #eba63a 100%), url("../images/train-wide.png");
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgb(255, 255, 255) 100%), linear-gradient(90deg, rgba(252, 0, 0, 0) 0%, rgb(235, 166, 58) 100%), url("../images/train-wide.png");
   background-size: 100% 50%, cover, cover;
   background-position: center bottom, center, center;
   background-repeat: no-repeat;
-
   margin-right: -15px;
   margin-left: -15px;
   padding: 40px 40px 40px 35%;
@@ -33,80 +32,106 @@ body {
   text-align: right;
   display: flex;
   flex-direction: column;
-  justify-content: center; }
+  justify-content: center;
+}
 
 .jumbotron h1 {
   font-weight: 700;
-  padding-bottom: 10px; }
+  padding-bottom: 10px;
+}
 
 .outer-wrapper {
   width: 100vw;
-  height: 100vh; }
+  height: 100vh;
+}
 
 header {
   font-size: 34px;
-  margin: 10px; }
+  margin: 10px;
+}
 
 .search-input {
-  padding: 20px 0; }
+  padding: 20px 0;
+}
 
 .search-input .destination, .search-input .time {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; }
+  justify-content: center;
+}
 
 .section {
-  padding: 20px 40px; }
+  padding: 20px 40px;
+}
 
-.search-button {
+#search-button {
   border-radius: 5px;
-  min-width: 50px;
-  width: fit-content; }
+  min-width: 100%;
+  width: 100%;
+}
 
 #suggestions {
   max-width: 400px;
-  margin: 0 auto; }
+  margin: 0 auto;
+}
 
 #suggestions label {
   font-size: 20px;
   font-weight: 700;
-  padding-bottom: 10px; }
+  padding-bottom: 10px;
+}
 
 #suggestions input {
-  margin-bottom: 10px; }
-
+  margin-bottom: 10px;
+}
 
 .results-row .results {
   box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
-  border: 2px solid var(--box-background);
-  border-radius: 10px; }
+  border: 2px dotted var(--box-background);
+  border-radius: 10px;
+}
 
 #news-results {
-  margin-top: 40px; }
+  margin-top: 40px;
+  min-height: 200px;
+  background-color: #4385EB;
+}
 
-#news-results, #video-results, #blog-results {
+#sports-results {
+  margin-top: 40px;
+  background-color: #EBA943;
+  min-height: 200px;
+}
+
+#interest-results {
+  background-color: #EB5543;
+}
+
+#news-results, #video-results, #blog-results, #sports-results, #interest-results {
   align-items: center;
   min-height: 300px;
-  padding: 15px; }
+  padding: 15px;
+}
 
 #suggestion-results {
   display: flex;
-  justify-content: center; }
+  justify-content: center;
+}
 
 .badge {
   background-color: var(--primary-dark);
   color: white;
   font-size: 15px;
   margin: 10px;
-  padding: 8px; }
+  padding: 8px;
+}
 
 .card {
   width: 200px;
   height: 200px;
   margin: 10px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px; }
-
-
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+}
 
 /*# sourceMappingURL=styles.css.map */
