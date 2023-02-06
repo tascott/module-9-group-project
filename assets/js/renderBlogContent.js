@@ -17,7 +17,7 @@ let newsDiv = $('#news-results');
 let videoDiv = $('#video-results');
 let blogDiv = $('#blog-results');
 let articleModal = document.getElementById('article-modal');
-let storedBlogPostIds = JSON.parse(localStorage.getItem('stored_blog_feed_ids')).topfeeds;
+let storedBlogPostIds = JSON.parse(localStorage.getItem('stored_blog_feed_ids'));
 let storedBlogPostContent = localStorage.getItem('stored_blog_feed_content');
 let topic = JSON.parse(localStorage.getItem('interest_keywords'))[0];
 
@@ -41,7 +41,6 @@ let callMediumAPI = function () {
                 .then(response => response.json())
                 .then(response => {
                     localStorage.setItem('stored_blog_feed_ids', JSON.stringify(response));
-                    getMediumArticleContent();
                 })
                 .catch(err => console.error(err));
         }
@@ -54,7 +53,7 @@ let callMediumAPI = function () {
         console.log('IDs but no stored blog post content')
 
         // shortern storedBlogPostIds to 3
-        storedBlogPostIds = storedBlogPostIds.slice(0, 3);
+        storedBlogPostIds = storedBlogPostIds.topfeeds.slice(0, 3);
         let tempData = [];
 
         const options = {
@@ -80,12 +79,16 @@ let callMediumAPI = function () {
                             renderBlogItem(allData);
                         })
                         .catch(err => console.error(err));
+                    localStorage.setItem('stored_blog_feed_content', JSON.stringify(tempData));
                 })
                 .catch(err => console.error(err));
             });
         }
+
 }
- function renderBlogItem(data) {
+function renderBlogItem(data) {
+    let blog = data.article;
+    let content = data.content;
      console.log(data)
     //  let time = userData.time;
      html = `
@@ -93,7 +96,7 @@ let callMediumAPI = function () {
             <div class="card-body">
                 <h5 class="card-title">${blog.title}</h5>
                 <p class="card-text">By ${blog.author}</p>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#article-modal" data-bs-title="${blog.title}" data-bs-author="${blog.author}" data-bs-url="${blog.url}" data-bs-content="${blog.content}">Read Article</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#article-modal" data-bs-title="${blog.title}" data-bs-author="${blog.author}" data-bs-url="${blog.url}" data-bs-content="${content}">Read Article</button>
             </div>
         </div>
         `

@@ -412,7 +412,7 @@ Call the function to get the blog posts in renderBlogcontent.js
 -------
 */
 
-callMediumAPI();
+// callMediumAPI();
 
 
 // Render the content on page load (if we have any)
