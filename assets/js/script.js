@@ -42,22 +42,7 @@ $('#search-button').click(function(e){
                     lon = response.longitude    
                  }})
     }
-    $.ajax({
-        url: newsQueryUrl,
-        "X-Api-Key": news_api_key,
-        method: "GET", 
-        success:function(response){
-            let articles = response.articles.slice(0,9)
-            $(articles).each(function(){
-                let url = $(this)[0].url
-                $('#news-results').append(`<p>${url}</p>`)
-            })
-          
-        },
-        error: function(err){
-            console.log(err)
-        }
-    })
+   
 
  
 

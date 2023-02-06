@@ -14,39 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/styles.css">
-
-
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhxwG_aoHjYV5j28YqnNan8Ba4lJBfoEs&callback=initMap&v=weekly" defer></script>
-    <script>
-        function initMap() {
-            const uluru = { lat: -25.344, lng: 131.031 };
-            const map = new google.maps.Map(document.getElementById("map"), {
-              zoom: 4,
-              center: uluru,
-            });
-            const marker = new google.maps.Marker({
-              position: uluru,
-              map: map,
-            });
-          }
-          
-          window.initMap = initMap;
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
-        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
-        integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
-    </script>
-    <script src="./assets/js/keys.js"></script>
-    <script src="assets/js/renderContent.js"></script>
-    <script src="./assets/js/search.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <title>CommuteThings</title>
 </head>
@@ -67,7 +35,8 @@
                     <div class="col-sm-4 time">
                         <label for="search-by-time-input" placeholder="60 minutes">Search By Time</label>
                         <input type="text" id="search-by-time-input" />
-                        <div id="map" style="width: auto; height: 550px; position: relative; overflow: hidden;"></div>
+                        <div id="map_canvas" style="height: 354px; width:713px;"></div>
+
 
                     </div>
                      <div class="col-sm-4 destination">
@@ -106,26 +75,18 @@
             </div>
         </div>
 
-        <div style="margin: 20px 0; overflow: hidden;">
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:svgjs="http://svgjs.dev/svgjs" version="1.1" viewBox="3.02 39.06 789.48 59.5">
-                <path
-                    d="M8.520179748535156,85.20179748535156C24.2152468363444,81.46487617492676,69.5067253112793,69.20777384440105,102.69058227539062,62.780269622802734C135.87443923950195,56.35276540120443,174.43946329752603,49.32735506693522,207.62332153320312,46.63677215576172C240.80717976888022,43.94618924458822,272.3467966715495,43.796712239583336,301.7937316894531,46.63677215576172C331.24066670735675,49.4768320719401,355.7548573811849,57.84753545125326,384.304931640625,63.67713165283203C412.8550059000651,69.50672785441081,444.3946228027344,76.9805679321289,473.09417724609375,81.61434936523438C501.7937316894531,86.24813079833984,529.596425374349,89.83557510375977,556.5022583007812,91.47982025146484C583.4080912272135,93.12406539916992,608.5202128092448,94.02092615763347,634.5291748046875,91.47982025146484C660.5381368001302,88.93871434529622,687.1449686686198,82.36173502604167,712.5560302734375,76.23318481445312C737.9670918782552,70.10463460286458,774.5889587402344,58.295963287353516,786.9955444335938,54.708518981933594"
-                    fill="none" stroke-width="11" stroke="url(&quot;#SvgjsLinearGradient1000&quot;)"
-                    stroke-linecap="round"></path>
-                <defs>
-                    <linearGradient id="SvgjsLinearGradient1000">
-                        <stop stop-color="hsl(36, 81%, 59%)" offset="0"></stop>
-                        <stop stop-color="hsl(216, 81%, 59%)" offset="1"></stop>
-                    </linearGradient>
-                </defs>
-            </svg>
-        </div>
+
 
         <div class="row section results-row">
             <div class="results container-fluid">
                 <div class="row" id="news-results">
+                        
+                </div>
+                <div class="row" id="sports-results">
 
+                </div>
+                <div class = "row" id ="interest-results">
+                    
                 </div>
                 <div class="row" id="video-results">
                     <div id="floating-panel">
@@ -142,14 +103,14 @@
         </div>
     </div>
 
-    <div class="modal fade" id="article-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="article-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">New message</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div id="news" class="modal-body">
                     <h4 class="author"></h4>
                     <a class="url" href="">Go to full website</a>
                     <p class="modal-text"></p>
@@ -170,13 +131,25 @@
             </div>
             <div id="right-panel"></div>
         </div>
-    </div>
+    </div> -->
 
-  
-    
-    <script>
-     
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+    integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
+    integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhxwG_aoHjYV5j28YqnNan8Ba4lJBfoEs&callback=initMap&v=weekly" defer></script>
+
+<script src="./assets/js/keys.js"></script>
+<script src="assets/js/renderContent.js"></script>
+<script src="./assets/js/search.js"></script>
 
 </body>
 
