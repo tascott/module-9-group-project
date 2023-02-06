@@ -3,7 +3,7 @@ let interests = [];
 let interestContainer = $('#suggestion-results');
 let stored_news = JSON.parse(localStorage.getItem('stored_news'))
 let stored_sports = JSON.parse(localStorage.getItem('stored_sports'))
-let interest_results = JSON.parse(localStorage.getItem('interest_results'))
+let interest_results = JSON.parse(localStorage.getItem('interest_keywords'))
 let final_words = $('#suggestions-list');
 
 // Toggle between manual time entry and google search
@@ -227,11 +227,12 @@ let renderAllNews = function () {
     $('#sports-results').append(temp)
 
     // Fetch some results for interests
-    if (interest_results.length == 0) {
+    if (interest_results.length) {
         console.log('no interest results, calling search API')
         let interests = JSON.parse(localStorage.getItem('interest_keywords'));
         interests.forEach((interest) => {
             queryString = new URLSearchParams(interest).toString();
+            console.log(queryString)
             const settings = {
                 "async": true,
                 "crossDomain": true,
