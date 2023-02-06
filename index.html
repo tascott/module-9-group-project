@@ -14,7 +14,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <title>CommuteThings</title>
 </head>
@@ -24,90 +26,96 @@
         <div class="jumbotron jumbotron-fluid">
             <h1 class="display-5">CommuteThings</h1>
             <p class="">Welcome to the ultimate commute companion! Say goodbye to boring, unproductive trips to
-                work and hello to a world of entertainment. We provide you with the latest news, music and video to help you make the most of your commute.
+                work and hello to a world of entertainment. We provide you with the latest news, music and video to help
+                you make the most of your commute.
             </p>
             <p class="lead">Curate your journey now <i class="bi bi-arrow-down-square-fill"></i>
             </p>
         </div>
-        <div class="row section">
-            <div class="col-sm-12">
-                <div class="row search-input">
-                    <div class="col-sm-4 time">
-                        <label for="search-by-time-input" placeholder="60 minutes">Search By Time</label>
-                        <input type="text" id="search-by-time-input" />
-                        <div id="map_canvas" style="height: 354px; width:713px;"></div>
-
-
-                    </div>
-                     <div class="col-sm-4 destination">
-                        <label for="search-by-destination-input">Search By Destination</label>
-                        <input type="text" id="destination-start" placeholder="start" />
-                        <input type="text" id="destination-end" placeholder="end" />
-                        <input type="checkbox" id="use-location" name="use-location">
-                        <label for="use-location">Use Location</label>
-                    </div>
-                    <div class="col-sm-4 transport">
-                        <h6>Method of Transport</h6>
-                        <form id="transport-form">
-                            <label for="tube">Tube</label>
-                            <input type="checkbox" id="tube" name="tube">
-                            <label for="car">Car</label>
-                            <input type="checkbox" id="car" name="car">
-                            <label for="bus">Bus</label>
-                            <input type="checkbox" id="bus" name="bus">
-                            <label for="walk">Walk</label>
-                            <input type="checkbox" id="walk" name="walk">
-                        </form>
-                    </div>
-
+        <div class="row section search-input">
+            <div class="time">
+                <h4>Calculate Journey Length</h4>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="travelRadios" id="manually-enter"
+                        value="option1" checked>
+                    <label class="form-check-label" for="travelRadios1">
+                        Manually enter time
+                    </label>
                 </div>
-             
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="travelRadios" id="use-google"
+                        value="option2">
+                    <label class="form-check-label" for="travelRadios2">
+                        Find public transport time
+                    </label>
+                </div>
+                <div class="search-google hidden">
+                    <form id="transport-form">
+                        <input type="checkbox" id="tube" name="tube">
+                        <label for="tube">Tube</label>
+
+                        <input type="checkbox" id="car" name="car">
+                        <label for="car">Car</label>
+
+                        <input type="checkbox" id="bus" name="bus">
+                        <label for="bus">Bus</label>
+
+                        <input type="checkbox" id="walk" name="walk">
+                        <label for="walk">Walk</label>
+                    </form>
+                    <input type="text" id="destination-start" placeholder="start" />
+                    <input type="text" id="destination-end" placeholder="end" />
+                    <button id="calculate-time" type="button" class="btn btn-primary calculate-time">Calculate Time</button>
+                </div>
+                <div class="search-time">
+                    <label for="search-by-time-input">Search By Time (minutes)</label>
+                    <input type="number" id="search-by-time-input" placeholder="e.g. 60" />
+                    <button id="add-time" type="button" class="btn btn-primary calculate-time">Add Time</button>
+                </div>
+                <!-- <input type="checkbox" id="use-location" name="use-location"> -->
+                <!-- <label for="use-location">Use Location</label> -->
+
+                <h6 id="calculated-time"></h6>
             </div>
-        </div>
-        <div class="row section suggestions">
-            <div class="col-sm-12 text-center">
-                <div id="suggestions" class="row suggestions-row">
-                    <label for="suggestion-text" placeholder="music">Enter a topic:</label>
-                    <input type="text" id="suggestion-text">
+            <div class="">
+                <div id="suggestions" class="row suggestions-row text-center">
+                    <h4>Find Topics</h4>
+                    <div class="suggestions-input-container">
+                        <input type="text" id="suggestion-text" placeholder="Enter a topic">
+                        <button class="btn btn-dark" id="add-topic">Add topic</button>
+                    </div>
+                    <div id="suggestion-results-container"><h6 class="hidden">How about these too? <span class="small">(Click to add)</span></h6>
+                        <div id="suggestion-results"></div>
+                    </div>
+                    <div id="suggestions-list-container"><h6 class="hidden">Your chosen topics: </h6>
+                        <div id="suggestions-list"></div>
+                    </div>
                     <button id="search-button" type="button" class="btn btn-primary search-button">Search</button>
                 </div>
-                <div id="suggestion-results"></div>
             </div>
         </div>
-
-
-
         <div class="row section results-row">
+            <h2 class="your-results">Your results</h2>
             <div class="results container-fluid">
                 <div class="row" id="news-results">
-                        
                 </div>
                 <div class="row" id="sports-results">
-
                 </div>
-                <div class = "row" id ="interest-results">
-                    
+                <div class="row" id="interest-results">
                 </div>
                 <div class="row" id="video-results">
-                    <div id="floating-panel">
-                        <input id="latlng" type="text" value="40.714224,-73.961452" />
-                        <input id="submit" type="button" value="Reverse Geocode" />
-                    </div>
-                <div id="map"></div>
                 </div>
-
-                 <div class="row" id="blog-results">
-
-                 </div>
+                <div class="row" id="blog-results">
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- <div class="modal fade" id="article-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="article-modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                    <h5 class="modal-title" id="modalLabel"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div id="news" class="modal-body">
@@ -117,39 +125,28 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div id="floating-panel">
-                <strong>Start:</strong>
-                <select id="start">
-                    <option value="e17 4sr">Chicago</option>
-                </select>
-                <br>
-                <strong>End:</strong>
-                <select id="end">
-                    <option value="vauxhall station" selected="selected">St Louis</option>
-                </select>
-            </div>
-            <div id="right-panel"></div>
-        </div>
-    </div> -->
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
-    integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous">
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
-    integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhxwG_aoHjYV5j28YqnNan8Ba4lJBfoEs&callback=initMap&v=weekly" defer></script>
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
+        integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
+    </script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhxwG_aoHjYV5j28YqnNan8Ba4lJBfoEs&callback=initMap&v=weekly"
+        defer>
+    </script>
 
-<script src="./assets/js/keys.js"></script>
-<script src="assets/js/renderContent.js"></script>
-<script src="./assets/js/search.js"></script>
+    <script src="./assets/js/keys.js"></script>
+    <script src="./assets/js/renderBlogContent.js"></script>
+    <script src="./assets/js/search.js"></script>
 
 </body>
 
