@@ -3,7 +3,7 @@ let interests = [];
 let interestContainer = $('#suggestion-results');
 let stored_news = JSON.parse(localStorage.getItem('stored_news'))
 let stored_sports = JSON.parse(localStorage.getItem('stored_sports'))
-let interest_results = JSON.parse(localStorage.getItem('interest_keywords'))
+let interest_results = JSON.parse(localStorage.getItem('interest_results'))
 let final_words = $('#suggestions-list');
 
 // Toggle between manual time entry and google search
@@ -227,12 +227,11 @@ let renderAllNews = function () {
     $('#sports-results').append(temp)
 
     // Fetch some results for interests
-    if (interest_results.length) {
+    if (interest_results.length == 0) {
         console.log('no interest results, calling search API')
         let interests = JSON.parse(localStorage.getItem('interest_keywords'));
         interests.forEach((interest) => {
             queryString = new URLSearchParams(interest).toString();
-            console.log(queryString)
             const settings = {
                 "async": true,
                 "crossDomain": true,
@@ -413,7 +412,7 @@ Call the function to get the blog posts in renderBlogcontent.js
 -------
 */
 
-// callMediumAPI();
+callMediumAPI();
 
 
 // Render the content on page load (if we have any)

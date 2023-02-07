@@ -10,7 +10,9 @@ let userData = {
     "stored_news": [],
     "stored_sports": [],
     "stored_videos": [],
-    "stored_blogs": []
+    "stored_blogs": [],
+    "interest_results": []
+
 }
 
 let newsDiv = $('#news-results');
@@ -19,7 +21,7 @@ let blogDiv = $('#blog-results');
 let articleModal = document.getElementById('article-modal');
 let storedBlogPostIds = JSON.parse(localStorage.getItem('stored_blog_feed_ids'));
 let storedBlogPostContent = localStorage.getItem('stored_blog_feed_content');
-let topic = JSON.parse(localStorage.getItem('interest_keywords'))[0];
+let topic = JSON.parse(localStorage.getItem('userData')).topics;
 
 // Get content from Medium API and save to local storage, use the first word of the users search query as the topic
 
