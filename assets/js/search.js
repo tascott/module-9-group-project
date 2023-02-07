@@ -1,10 +1,41 @@
 // THIS IS THE ONLY SCRIPT FOR SEARCHING.accordion
+let userData;
+
+// Update the user object with the data from local storage, if none, set params to null and we'll set it later
+let userDataFromStorage = JSON.parse(localStorage.getItem('userData'));
+if (userDataFromStorage == null) {
+    userData = {
+        "exampleContent": true,
+        "time": "60 minutes (default)",
+        "topics": [],
+        "location": {
+            "from": null,
+            "to": null
+        },
+        "transport": "public",
+        "stored_news": [],
+        "stored_interests": [],
+        "stored_sports": [],
+        "stored_videos": [],
+        "stored_blog_content": [],
+        "stored_blog_post_ids": [],
+    }
+} else {
+    userData = userDataFromStorage;
+}
 let interests = [];
 let interestContainer = $('#suggestion-results');
-let stored_news = JSON.parse(localStorage.getItem('stored_news'))
-let stored_sports = JSON.parse(localStorage.getItem('stored_sports'))
-let interest_results = JSON.parse(localStorage.getItem('interest_keywords'))
 let final_words = $('#suggestions-list');
+
+let stored_news = userData.stored_news;
+let stored_sports = userData.stored_sports;
+let stored_interests = userData.stored_interests;
+let storedTopBlogPostIds = userData.stored_blog_post_ids;
+let storedBlogPostContent = userData.stored_blog_content;
+let topic = userData.topics[0] ? userData.topics[0] : null;
+
+let blogDiv = $('#blog-results');
+let articleModal = document.getElementById('article-modal');
 
 // Toggle between manual time entry and google search
 $('#manually-enter').click(function () {
@@ -19,10 +50,15 @@ $('#use-google').click(function () {
     $('.search-google').css('display', 'flex');
 })
 
+//Add the default time to the page to beging with
+$('#calculated-time').text(userData.time);
+
 // Add the time to the user object (google option handled in the g-maps api callback)
 $('#add-time').click(function () {
     let time = $('#search-by-time-input').val();
     userData.time = time;
+    localStorage.setItem('userData', JSON.stringify(userData));
+    $('#calculated-time').text(time);
 })
 
 // Listener to add single typed topic for the interests list
@@ -30,6 +66,7 @@ $('#add-topic').click(function () {
     if ($('#suggestion-text').val() != '') {
         let term = $('#suggestion-text').val();
         getRelatedWords(term);
+        $('#suggestion-text').val('');
     }
 })
 
@@ -38,18 +75,25 @@ $("#suggestions").on("click", ".addWord", function () {
     addWordToSearch($(this).data('interest'));
 });
 
+// Event listener to add suggested topics to the interests list
+$("#suggestions").on("click", ".delete", function () {
+    let option = $(this).data('option');
+    deleteWord(option);
+});
+
 // Render the content after searching and getting parameters
 $('#search-button').click(function () {
-    localStorage.setItem('userData', JSON.stringify(userData));
+    if ($('#suggestion-text').val() != '') {
+        addWordToSearch($('#suggestion-text').val());
+    }
     renderAllNews();
 });
 
-
 let renderAllNews = function () {
     let time;
-    if (JSON.parse(localStorage.getItem('userData'))) {
-        time = JSON.parse(localStorage.getItem('userData')).time;
-        $('.your-results').replaceWith(`<h2>Your results for a ${time} minute journey</h2>`);
+    if (userData.time) {
+        time = userData.time;
+        $('.your-results').replaceWith(`<h2>Your results for a ${time} journey</h2>`);
     }
 
     $('#news-results').empty().append(`<h4>Top Stories</h4>`);
@@ -63,8 +107,8 @@ let renderAllNews = function () {
         stored_sports = []
     }
 
-    if (interest_results == null) {
-        interest_results = []
+    if (stored_interests == null) {
+        stored_interests = []
     }
 
     if (stored_news.length == 0) {
@@ -89,15 +133,20 @@ let renderAllNews = function () {
             }
             stored_news = [JSON.stringify(stored_news)]
 
-            localStorage.setItem('stored_news', stored_news)
-
+            userData.stored_news = stored_news;
+            localStorage.setItem('userData', JSON.stringify(userData));
+            renderNews();
         });
+    } else {
+        renderNews();
     }
-    let newsTemp = `<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+
+    function renderNews() {
+        let newsTemp = `<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">`
 
-    let temp = ``
-    let tempEnd = `</div>
+        let temp = ``
+        let tempEnd = `</div>
        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
        <span class="sr-only">Previous</span>
@@ -108,31 +157,33 @@ let renderAllNews = function () {
        </a>
        </div>`
 
-    let count = 0
-    $(stored_news[0]).each(function () {
-        count++
-        let title = $(this)[0].title
-        let link = $(this)[0].link
-        let photo_url = $(this)[0].photo_url
-        let source_logo_url = $(this)[0].source_logo_url
-        if (count == 1) {
-            temp = temp + `<div class="carousel-item active" style="background-image: url(${photo_url})"><div class="carousel-item-inner">
+        let count = 0
+        let articles = JSON.parse(stored_news[0]);
+        $(articles[0]).each(function () {
+            count++
+            let title = $(this)[0].title
+            let link = $(this)[0].link
+            let photo_url = $(this)[0].photo_url
+            let source_logo_url = $(this)[0].source_logo_url
+            if (count == 1) {
+                temp = temp + `<div class="carousel-item active" style="background-image: url(${photo_url})"><div class="carousel-item-inner">
                 <img class="logo" src="${source_logo_url}" alt="First slide">
                 <p class="company-title">${title}</p>
                 <p class="company-links"><a href="${link}" target="_blank">Go To Article</a></p>
                 </div></div>`
 
-        } else {
-            temp = temp + `<div class="carousel-item" style="background-image: url(${photo_url})"><div class="carousel-item-inner">
+            } else {
+                temp = temp + `<div class="carousel-item" style="background-image: url(${photo_url})"><div class="carousel-item-inner">
                 <img class="logo" src="${source_logo_url}" alt="Second slide">
                 <p class="company-title">${title}</p>
                 <p class="company-links"><a href="${link} target="_blank">Go To Article</a></p>
                 </div></div>`
-        }
-    })
-    temp = newsTemp + temp + tempEnd
+            }
+        })
+        temp = newsTemp + temp + tempEnd
 
-    $('#news-results').append(temp)
+        $('#news-results').append(temp)
+    }
 
     // Render some sports info if we don't have any already
     if (stored_sports.length == 0) {
@@ -155,84 +206,91 @@ let renderAllNews = function () {
             } else {
                 stored_sports = [...stored_sports, ...results]
             }
-            stored_sports = JSON.stringify(stored_sports)
-            localStorage.setItem('stored_sports', stored_sports)
+            console.log('called sports API', stored_sports)
+            userData.stored_sports = stored_sports;
+            localStorage.setItem('userData', JSON.stringify(userData));
+            renderAllSports();
         });
+    } else {
+        renderAllSports();
     }
 
-    let sportsTemp = `<div id="carouselExampleControls2" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">`
+    function renderAllSports() {
+        let sportsTemp = `<div id="carouselExampleControls2" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">`
 
-    temp = ``
-    tempEnd = `</div>
-            <a class="carousel-control-prev" href="#carouselExampleControls2" role="button" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleControls2" role="button" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-            </a>
-       </div>`
+        temp = ``
+        tempEnd = `</div>
+                <a class="carousel-control-prev" href="#carouselExampleControls2" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls2" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+                </a>
+        </div>`
 
-    count = 0
-    for (let i = 0; i < stored_sports.length; i++) {
-        count++
-        let homeTeam = stored_sports[i].teams.home.name
-        let homeLogo = stored_sports[i].teams.home.logo
-        let awayTeam = stored_sports[i].teams.away.name
-        let awayLogo = stored_sports[i].teams.away.logo
-        let league = stored_sports[i].league.name
-        let round = stored_sports[i].league.round
-        let halftimeHomeScore = stored_sports[i].score.halftime.home
-        let halftimeAwayScore = stored_sports[i].score.halftime.away
-        let fulltimeHomeScore = stored_sports[i].score.fulltime.home
-        let fulltimeAwayScore = stored_sports[i].score.fulltime.away
-        let extratimeHomeScore
-        let extratimeAwayScore
-        if (stored_sports[i].score.extratime.home && stored_sports[i].score.extratime.away) {
-            extratimeHomeScore = stored_sports[i].score.extratime.home
-            extratimeAwayScore = stored_sports[i].score.extratime.away
-        }
-        if (count == 1) {
-            temp = temp + `<div class="carousel-item active"><div class="carousel-item-inner" style="background-image: url()">
-                <div class="row">
-                <img class="" src="${homeLogo}" alt="First slide">
-                </div>
-                <p>${homeTeam} vs ${awayTeam}</p>
-                <p>${league}</p>
-                <p>${round}</p>
-                <p>Halftime: ${homeTeam}: ${halftimeHomeScore} : ${halftimeAwayScore} ${awayTeam} </p>
-                <p>Fulltime: ${homeTeam}: ${fulltimeHomeScore} : ${fulltimeAwayScore} ${awayTeam}</p>`
-            if (extratimeHomeScore) {
-                temp = temp + `Extratime: <p> ${homeTeam} ${extratimeHomeScore} : ${extratimeAwayScore} ${awayTeam}</p>`
+        stored_sports = userData.stored_sports;
+
+        count = 0
+        for (let i = 0; i < stored_sports.length; i++) {
+            count++
+            let homeTeam = stored_sports[i].teams.home.name
+            let homeLogo = stored_sports[i].teams.home.logo
+            let awayTeam = stored_sports[i].teams.away.name
+            let awayLogo = stored_sports[i].teams.away.logo
+            let league = stored_sports[i].league.name
+            let round = stored_sports[i].league.round
+            let halftimeHomeScore = stored_sports[i].score.halftime.home
+            let halftimeAwayScore = stored_sports[i].score.halftime.away
+            let fulltimeHomeScore = stored_sports[i].score.fulltime.home
+            let fulltimeAwayScore = stored_sports[i].score.fulltime.away
+            let extratimeHomeScore
+            let extratimeAwayScore
+            if (stored_sports[i].score.extratime.home && stored_sports[i].score.extratime.away) {
+                extratimeHomeScore = stored_sports[i].score.extratime.home
+                extratimeAwayScore = stored_sports[i].score.extratime.away
             }
+            if (count == 1) {
+                temp = temp + `<div class="carousel-item active"><div class="carousel-item-inner" style="background-image: url()">
+                    <div class="row">
+                    <img class="" src="${homeLogo}" alt="First slide">
+                    </div>
+                    <p>${homeTeam} vs ${awayTeam}</p>
+                    <p>${league}</p>
+                    <p>${round}</p>
+                    <p>Halftime: ${homeTeam}: ${halftimeHomeScore} : ${halftimeAwayScore} ${awayTeam} </p>
+                    <p>Fulltime: ${homeTeam}: ${fulltimeHomeScore} : ${fulltimeAwayScore} ${awayTeam}</p>`
+                if (extratimeHomeScore) {
+                    temp = temp + `Extratime: <p> ${homeTeam} ${extratimeHomeScore} : ${extratimeAwayScore} ${awayTeam}</p>`
+                }
 
-            temp = temp + `</div></div>`
-        } else {
-            temp = temp + `<div class="carousel-item"><div class="carousel-item-inner" style="background-image: url()">
-                <img class="" src="${homeLogo}" alt="First slide">
-                <p>${homeTeam} vs ${awayTeam}</p>
-                <p>${league}</p>
-                <p>${round}</p>
-                <p>Halftime: ${homeTeam}: ${halftimeHomeScore} : ${halftimeAwayScore} ${awayTeam} </p>
-                <p>Fulltime: ${homeTeam}: ${fulltimeHomeScore} : ${fulltimeAwayScore} ${awayTeam}</p>`
-            if (extratimeHomeScore) {
-                temp = temp + `Extratime: <p> ${homeTeam} ${extratimeHomeScore} : ${extratimeAwayScore} ${awayTeam}</p>`
+                temp = temp + `</div></div>`
+            } else {
+                temp = temp + `<div class="carousel-item"><div class="carousel-item-inner" style="background-image: url()">
+                    <img class="" src="${homeLogo}" alt="First slide">
+                    <p>${homeTeam} vs ${awayTeam}</p>
+                    <p>${league}</p>
+                    <p>${round}</p>
+                    <p>Halftime: ${homeTeam}: ${halftimeHomeScore} : ${halftimeAwayScore} ${awayTeam} </p>
+                    <p>Fulltime: ${homeTeam}: ${fulltimeHomeScore} : ${fulltimeAwayScore} ${awayTeam}</p>`
+                if (extratimeHomeScore) {
+                    temp = temp + `Extratime: <p> ${homeTeam} ${extratimeHomeScore} : ${extratimeAwayScore} ${awayTeam}</p>`
+                }
+                temp = temp + `</div></div>`
             }
-            temp = temp + `</div></div>`
         }
+            temp = sportsTemp + temp + tempEnd
+            $('#sports-results').append(temp)
     }
-    temp = sportsTemp + temp + tempEnd
-    $('#sports-results').append(temp)
 
+    // If we have a topic but no data yet, fetch some data
+    if (stored_interests.length < 1 && userData.topics.length > 0) {
     // Fetch some results for interests
-    if (interest_results.length) {
-        console.log('no interest results, calling search API')
-        let interests = JSON.parse(localStorage.getItem('interest_keywords'));
+        let interests = userData.topics;
         interests.forEach((interest) => {
             queryString = new URLSearchParams(interest).toString();
-            console.log(queryString)
             const settings = {
                 "async": true,
                 "crossDomain": true,
@@ -245,52 +303,62 @@ let renderAllNews = function () {
             };
 
             $.ajax(settings).done(function (response) {
-                interest_results = response.value
-                localStorage.setItem('interest_results', JSON.stringify(interest_results))
+                stored_interests = response.value
+                userData.stored_interests = stored_interests;
+                localStorage.setItem('userData', JSON.stringify(userData));
+                renderCustomInterests(userData.stored_interests);
+            }).then(() => {
+                // Get blog content with the first interest
+                console.log('call medium API from search.js')
+                callMediumAPI(userData.topics[0]);
             });
         })
-    } else {
-        console.log('interest results already exist')
+    } else if (stored_interests.length > 0) {
+        renderCustomInterests(userData.stored_interests);
+        callMediumAPI(userData.topics[0]);
     }
 
-    let interestsTemp = `<div id="carouselExampleControls3" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">`
-    temp = ``
+    function renderCustomInterests() {
+        let stored_interests = userData.stored_interests;
+        let interestsTemp = `<div id="carouselExampleControls3" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">`
+        temp = ``
 
-    tempEnd = `</div>
-                <a class="carousel-control-prev" href="#carouselExampleControls3" role="button" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleControls3" role="button" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-                </a>
-                </div>`
+        tempEnd = `</div>
+                    <a class="carousel-control-prev" href="#carouselExampleControls3" role="button" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleControls3" role="button" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                    </a>
+                    </div>`
 
-    count = 0
-    $(interest_results).each(function () {
-        count++
-        let arr = $(this)[0]
-        let title = arr.title
-        let thumbnail = arr.thumbnail // these dont show the link is not a typical image
-        let url = arr.url
-        if (count == 1) {
-            temp = temp + `<div class="carousel-item active"><div class="carousel-item-inner" style="background-image: url()">
-                    <img class="" src="${thumbnail}" alt="First slide">
-                    <p>${title}</p>
-                    <p><a href="${url}" target="_blank">View image</a></p>
-                    </div></div>`
-        } else {
-            temp = temp + `<div class="carousel-item"><div class="carousel-item-inner" style="background-image: url()">
-                    <img class="" src="${thumbnail}" alt="Next slide">
-                    <p>${title}</p>
-                    <p><a href="${url}" target="_blank">View image</a></p>
-                    </div></div>`
-        }
-    })
-    temp = interestsTemp + temp + tempEnd
-    $('#interest-results').append(temp)
+        count = 0
+        $(stored_interests).each(function () {
+            count++
+            let arr = $(this)[0]
+            let title = arr.title
+            let thumbnail = arr.thumbnail // these dont show the link is not a typical image
+            let url = arr.url
+            if (count == 1) {
+                temp = temp + `<div class="carousel-item active"><div class="carousel-item-inner" style="background-image: url()">
+                        <img class="" src="${thumbnail}" alt="First slide">
+                        <p>${title}</p>
+                        <p><a href="${url}" target="_blank">View image</a></p>
+                        </div></div>`
+            } else {
+                temp = temp + `<div class="carousel-item"><div class="carousel-item-inner" style="background-image: url()">
+                        <img class="" src="${thumbnail}" alt="Next slide">
+                        <p>${title}</p>
+                        <p><a href="${url}" target="_blank">View image</a></p>
+                        </div></div>`
+            }
+        })
+        temp = interestsTemp + temp + tempEnd
+        $('#interest-results').append(temp)
+    }
 
     // get news for each topic
     // render topic news
@@ -343,11 +411,6 @@ function getRelatedWords(topicVal) {
         .catch(err => console.error(err));
 }
 
-function getRelatedWordsFromLocalStorage(topicVal) {
-    interests = JSON.parse(localStorage.getItem('interest_keywords'));
-    renderSuggestedWords(interests);
-}
-
 function renderSuggestedWords(wordoptions) {
     interestContainer.empty();
     $('#suggestion-results-container h6').removeClass('hidden')
@@ -365,13 +428,29 @@ function addWordToSearch(topicVal) {
         interest = $(this).attr('data-interest');
     }
 
-    userData.topics.indexOf(interest) === -1 ? userData.topics.push(interest) : console.log("This item already exists");
+    userData.topics.indexOf(interest) === -1 ? userData.topics.push(interest) : null;
     final_words.empty();
     userData.topics.forEach(function (option) {
-        final_words.append(`<span class="interest-done badge badge-pill badge-primary">${option}</span>`);
+        final_words.append(`<span class="interest-done badge badge-pill badge-primary">${option}</span><i class="bi bi-x-circle delete" data-option="${option}"></i>`);
     });
-    localStorage.setItem('interest_keywords', JSON.stringify(userData.topics));
+    localStorage.setItem('userData', JSON.stringify(userData));
 };
+
+function deleteWord(option) {
+    let index = userData.topics.indexOf(option);
+    if (index > -1) {
+        userData.topics.splice(index, 1);
+    }
+    final_words.empty();
+    userData.topics.forEach(function (option) {
+        addWordToSearch(option)
+    });
+    localStorage.setItem('userData', JSON.stringify(userData));
+}
+
+userData.topics.forEach(function (option) {
+    addWordToSearch(option)
+});
 
 /*
 -------
@@ -398,23 +477,122 @@ function calculateAndDisplayRoute(directionsService) {
         if (status === google.maps.DirectionsStatus.OK) {
             let time = response.routes[0].legs[0].duration.text
             let minutes = response.routes[0].legs[0].duration.value / 60
-            userData.time = minutes;
+            userData.time = Math.round(minutes);
+            userData.location.from = start;
+            userData.location.to = end;
+            localStorage.setItem('userData', JSON.stringify(userData));
             $('#calculated-time').text(time);
-
         } else {
             console.log('Directions request failed due to ' + status);
         }
     });
 };
 
+// Render the content on page load (if we have any)
+renderAllNews();
+
 /*
 -------
-Call the function to get the blog posts in renderBlogcontent.js
+Get offline-readable content from Medium API
 -------
 */
 
-// callMediumAPI();
+function callMediumAPI(topicToSearch, refresh = false) {
+    const options = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': mediumAPIKey,
+            'X-RapidAPI-Host': 'medium2.p.rapidapi.com'
+        }
+    };
+
+    //If we have content just render it
+    if (storedBlogPostContent.length > 0) {
+        // We have some content, render the divs
+        renderBlogItems(storedBlogPostContent);
+    } else {
+        // If we don't have any content, get it from the API
+        let tempData = [];
+        if (topicToSearch) {
+            fetch(`https://medium2.p.rapidapi.com/topfeeds/${topicToSearch}/hot`, options)
+                .then(response => response.json())
+                .then(response => {
+                    userData.stored_blog_post_ids = response.topfeeds;
+                    localStorage.setItem('userData', JSON.stringify(userData));
+
+                    if (userData.stored_blog_post_ids.length > 0) {
+                        userData.stored_blog_post_ids = userData.stored_blog_post_ids.slice(0, 1);
+                        userData.stored_blog_post_ids.forEach(function (id, index) {
+                            console.log('api call medium2, ', index)
+                            //This API only gets the metadata
+                            fetch(`https://medium2.p.rapidapi.com/article/${id}`, options)
+                                .then(response => response.json())
+                                .then(function (response) {
+                                    tempData.push(response);
+                                    fetch(`https://medium2.p.rapidapi.com/article/${id}/content`, options)
+                                        .then(response => response.json())
+                                        .then(function (response) {
+                                            // Push the content to the tempData array
+                                            tempData[index].content = response;
+                                            console.log('tempData', tempData)
+                                        }).then(function () {
+                                            userData.stored_blog_content = tempData;
+                                            renderBlogItems(tempData);
+                                            localStorage.setItem('userData', JSON.stringify(userData))
+                                        })
+                                        .catch(err => console.error(err));
+                                })
+                                .catch(err => console.error(err));
+                        })
+                    }
+                })
+                .catch(err => console.error(err));
+        }
+    }
+}
+
+function renderBlogItems(list) {
+    list.forEach(function (item, i) {
+        let title = item.title;
+        let subtitle = item.subtitle;
+        let wordcount = item.wordcount;
+        let content = item.content.content;
+        // replace all the new lines with a line break and all the double and single quotes with html entities
+        content = content.replace(/(\r\n|\n|\r)/gm, "<br>").replace(/'/g, "&#39;").replace(/"/g, "&#34;");
+        let url = item.url;
+
+        html = `
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">${title}</h5>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#article-modal" data-bs-title="${title}" data-bs-url="${url}" data-bs-content="${content}">Read Article</button>
+            </div>
+        </div>
+        `
+
+        blogDiv.html(html);
+        blogDiv.prepend(`<h2>Blogs</h2><h6>Available offline</h6>`);
+    })
+};
 
 
-// Render the content on page load (if we have any)
-renderAllNews();
+// Put blog content in a modal for offline reading
+
+articleModal.addEventListener('show.bs.modal', function (event) {
+    // Button that triggered the modal
+    var button = event.relatedTarget
+    // Extract info from data-bs-* attributes
+    var title = button.getAttribute('data-bs-title')
+    var content = button.getAttribute('data-bs-content')
+    var url = button.getAttribute('data-bs-url')
+    // If necessary, you could initiate an AJAX request here
+    // and then do the updating in a callback.
+
+    var modalTitle = articleModal.querySelector('.modal-title')
+    var modalBodyInput = articleModal.querySelector('.modal-text')
+    var modalUrl = articleModal.querySelector('.url')
+
+    modalUrl.attributes.href.value = url;
+    modalTitle.textContent = title;
+    $(modalBodyInput).html(content)
+});
