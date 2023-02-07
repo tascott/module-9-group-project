@@ -557,6 +557,8 @@ function renderBlogItems(list) {
         let subtitle = item.subtitle;
         let wordcount = item.wordcount;
         let content = item.content.content;
+        // replace all the new lines with a line break and all the double and single quotes with html entities
+        content = content.replace(/(\r\n|\n|\r)/gm, "<br>").replace(/'/g, "&#39;").replace(/"/g, "&#34;");
         let url = item.url;
 
         html = `
@@ -592,5 +594,5 @@ articleModal.addEventListener('show.bs.modal', function (event) {
 
     modalUrl.attributes.href.value = url;
     modalTitle.textContent = title;
-    modalBodyInput.textContent = content
+    $(modalBodyInput).html(content)
 });
