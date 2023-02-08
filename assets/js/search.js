@@ -438,7 +438,7 @@ function renderAllVideoResults(stored_youtube_searches){
                     <p class="video-views">Number of Views: ${number_of_views}</p>
                     <p class="video-published">Date Uploaded: ${published_time}</p>
                     <p class="video-length">Video Length: ${video_length}</p>
-                    <button class="video-button btn btn-primary" onclick="getVideo(${video_id}, ${title})">Watch Video</button>
+                    <button onclick="playVideo()"id="video-button"class="video-button btn btn-primary">Watch Video</button>
                     </div></div>`
             } else {
                 videoMid = videoMid + `<div class="carousel-item"><div class="carousel-item-inner video-result" style="background-image: url()">
@@ -448,7 +448,7 @@ function renderAllVideoResults(stored_youtube_searches){
                     <p class="video-views">Number of Views: ${number_of_views}</p>
                     <p class="video-published">Date Uploaded: ${published_time}</p>
                     <p class="video-length">Video Length: ${video_length}</p>
-                    <button class="video-button btn btn-primary" onclick="getVideo(${video_id}, ${title})">Watch Video</button>
+                    <button onclick="playVideo()"id="video-button" class="video-button btn btn-primary" >Watch Video</button>
                     </div></div>`
             }
         })
@@ -461,15 +461,22 @@ function renderAllVideoResults(stored_youtube_searches){
 
 }
 
-
-
-
 function getVideo(videoID,title)
 {
-    let video = `<iframe title="${title}" src="http://www.youtube.com/embed/${videoID}" frameborder="0"></iframe>`
-    $('#video-results').empty()
-    $('#video-results').append(video)
+   
 }
+
+function playVideo()
+{
+    console.log('hello')
+    let src = `https://www.youtube.com/embed/Nw8nmeH1Vig`
+    $('#video-results').hide()
+    $('#video-container').css('display','block')
+    $('#video-element').attr('src',src)
+}
+$('#video-button').click(getVideo)
+
+
 
 
 
