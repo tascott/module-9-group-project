@@ -426,7 +426,7 @@ function renderAllVideoResults(stored_youtube_searches) {
                     </div></div>`
             }
         })
-        let videoHeader = `<h4>Video Results</h4>`
+        let videoHeader = `<h4>Personalised Video Results</h4>`
         videoEl = videoHeader + videoTop + videoMid + videoEnd
         $('#video-results').removeClass('hidden').append(videoEl)
     }
