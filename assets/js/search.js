@@ -17,6 +17,7 @@ if (userDataFromStorage == null) {
         "stored_interests": [],
         "stored_sports": [],
         "stored_videos": [],
+        "stored_youtube_searches": [],
         "stored_blog_content": [],
         "stored_blog_post_ids": [],
     }
@@ -26,16 +27,17 @@ if (userDataFromStorage == null) {
 let interests = [];
 let interestContainer = $('#suggestion-results');
 let final_words = $('#suggestions-list');
-
+let youtube_search = $('#youtube-text')
 let stored_news = userData.stored_news;
 let stored_sports = userData.stored_sports;
 let stored_interests = userData.stored_interests;
 let storedTopBlogPostIds = userData.stored_blog_post_ids;
 let storedBlogPostContent = userData.stored_blog_content;
 let topic = userData.topics[0] ? userData.topics[0] : null;
-
+let stored_videos = userData.stored_videos
 let blogDiv = $('#blog-results');
 let articleModal = document.getElementById('article-modal');
+let stored_youtube_searches = userData.stored_youtube_searches
 
 // Toggle between manual time entry and google search
 $('#manually-enter').click(function () {
@@ -88,6 +90,11 @@ $('#search-button').click(function () {
     }
     renderAllNews();
 });
+
+$('#search-youtube').click(searchYoutube)
+
+
+
 
 let renderAllNews = function () {
     let time;
@@ -360,29 +367,118 @@ let renderAllNews = function () {
         $('#interest-results').append(temp)
     }
 
-    // get news for each topic
-    // render topic news
+    // video search
+    //let youtubeQueryString = new URLSearchParams(youtube_search).toString();
+    
 
-    //do css media queries -> finished mine
-    // let newsQueryUrl = `https://newsapi.org/v2/everything?q=keyword&apiKey=${news_api_key}`
-
-    // $.ajax({
-    //     url: newsQueryUrl,
-    //     "X-Api-Key": news_api_key,
-    //     method: "GET",
-    //     success:function(response){
-    //         let articles = response.articles.slice(0,9)
-    //         $(articles).each(function(){
-    //             let url = $(this)[0].url
-    //             $('#news-results').append(`<p>${url}</p>`)
-    //         })
-
-    //     },
-    //     error: function(err){
-    //         console.log(err)
-    //     }
-    // })
+   
 };
+
+
+
+function searchYoutube(){
+    if(youtube_search){
+        youtube_search = youtube_search.val()
+        youtube_search = encodeURIComponent(youtube_search)
+        const settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": `https://youtube-search6.p.rapidapi.com/search/?query=${youtube_search}&number=10&country=us&lang=en`,
+            "method": "GET",
+            "headers": {
+                "X-RapidAPI-Key": "289a29c09emsh67b645d76a420f4p19e2ffjsn3ff56d782897",
+                "X-RapidAPI-Host": "youtube-search6.p.rapidapi.com"
+            }
+        };
+        
+        $.ajax(settings).done(function (response) {
+        
+            stored_youtube_searches = response.videos
+            userData.stored_youtube_searches = stored_youtube_searches
+            localStorage.setItem('userData', JSON.stringify(userData))
+            renderAllVideoResults(stored_youtube_searches)
+            
+        });
+    }
+}
+
+function renderAllVideoResults(stored_youtube_searches){
+    let videoEl
+    let videoMid = ``
+    let videoTop = `<div id="carouselExampleControls4" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">`
+    let videoEnd = `</div>
+            <a class="carousel-control-prev" href="#carouselExampleControls4" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls4" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+            </a>
+            </div>`
+    let count = 0
+    if(stored_youtube_searches){
+        $(stored_youtube_searches).each(function () {
+            count++
+            let channel_id = $(this)[0].channel_id 
+            let description = $(this)[0].description
+            let number_of_views = $(this)[0].number_of_views
+            let published_time = $(this)[0].published_time
+            let thumbnail = $(this)[0].thumbnails[0].url
+         
+            let title = $(this)[0].title 
+            let video_id = $(this)[0].video_id 
+            let video_length = $(this)[0].video_length
+            if (count == 1) {
+                videoMid = videoMid + `<div class="carousel-item active"><div class="carousel-item-inner video-result" style="background-image: url(); ">
+                    <img class=""  src="${thumbnail}" alt="First slide">
+                    <h5 class="video-title">${title}</h5>
+                    <p class=video-description">Description: ${description}</p>
+                    <p class="video-views">Number of Views: ${number_of_views}</p>
+                    <p class="video-published">Date Uploaded: ${published_time}</p>
+                    <p class="video-length">Video Length: ${video_length}</p>
+                    <button onclick="playVideo()"id="video-button"class="video-button btn btn-primary">Watch Video</button>
+                    </div></div>`
+            } else {
+                videoMid = videoMid + `<div class="carousel-item"><div class="carousel-item-inner video-result" style="background-image: url()">
+                     <img class="" onclick="getVideo()"src="${thumbnail}" alt="Next slide">
+                    <h5 class="video-title">${title}</h5>
+                    <p class=video-description">Description: ${description}</p>
+                    <p class="video-views">Number of Views: ${number_of_views}</p>
+                    <p class="video-published">Date Uploaded: ${published_time}</p>
+                    <p class="video-length">Video Length: ${video_length}</p>
+                    <button onclick="playVideo()"id="video-button" class="video-button btn btn-primary" >Watch Video</button>
+                    </div></div>`
+            }
+        })
+        let videoHeader = `<h4>Video Results</h4>`
+    videoEl = videoHeader + videoTop + videoMid + videoEnd
+    $('#video-results').append(videoEl)
+    
+    }
+
+
+}
+
+function getVideo(videoID,title)
+{
+   
+}
+
+function playVideo()
+{
+    console.log('hello')
+    let src = `https://www.youtube.com/embed/Nw8nmeH1Vig`
+    $('#video-results').hide()
+    $('#video-container').css('display','block')
+    $('#video-element').attr('src',src)
+}
+$('#video-button').click(getVideo)
+
+
+
+
 
 /*
 -------
@@ -507,7 +603,7 @@ function callMediumAPI(topicToSearch, refresh = false) {
     };
 
     //If we have content just render it
-    if (storedBlogPostContent.length > 0) {
+    if (storedBlogPostContent.length) {
         // We have some content, render the divs
         renderBlogItems(storedBlogPostContent);
     } else {
