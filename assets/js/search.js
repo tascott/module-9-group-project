@@ -401,7 +401,18 @@ function searchYoutube(){
             
         });
     }
-}
+
+    // fetch from youtube api
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${youtube_search}&type=video&key=AIzaSyBdWjXYYmyEctduqjw4J8BTYuYDlLxOjm4`)
+        .then(response => response.json())
+        .then(function (response) {
+            console.log(response.items);
+            stored_youtube_searches = response.items
+            userData.stored_youtube_searches = stored_youtube_searches
+            localStorage.setItem('userData', JSON.stringify(userData))
+            renderAllVideoResults(stored_youtube_searches)
+        });
+        }
 
 function renderAllVideoResults(stored_youtube_searches){
     let videoEl
@@ -422,23 +433,21 @@ function renderAllVideoResults(stored_youtube_searches){
     if(stored_youtube_searches){
         $(stored_youtube_searches).each(function () {
             count++
-            let channel_id = $(this)[0].channel_id
-            let description = $(this)[0].description
-            let number_of_views = $(this)[0].number_of_views
-            let published_time = $(this)[0].published_time
-            let thumbnail = $(this)[0].thumbnails[0].url
+            let description = $(this)[0].snippet.description
+            let published_time = $(this)[0].snippet.publishTime
+            let thumbnail = $(this)[0].snippet.thumbnails.default.url
 
-            let title = $(this)[0].title
-            let videoID = $(this)[0].video_id
-            let video_length = $(this)[0].video_length
+            //Note: if we want to get more details about the video, like length, there is a separate api call that we can make - https://www.googleapis.com/youtube/v3/videos?id=9bZkp7q19f0&part=contentDetails&key={YOUR_API_KEY}
+
+
+            let title = $(this)[0].snippet.title
+            let videoID = $(this)[0].id.videoId
             if (count == 1) {
                 videoMid = videoMid + `<div class="carousel-item active"><div class="carousel-item-inner video-result" style="background-image: url(); ">
                     <img class=""  src="${thumbnail}" alt="First slide">
                     <h5 class="video-title">${title}</h5>
                     <p class=video-description">Description: ${description}</p>
-                    <p class="video-views">Number of Views: ${number_of_views}</p>
                     <p class="video-published">Date Uploaded: ${published_time}</p>
-                    <p class="video-length">Video Length: ${video_length}</p>
                     <button data-source="${videoID}" id="video-button"class="video-button btn btn-primary">Watch Video</button>
                     </div></div>`
             } else {
@@ -446,9 +455,7 @@ function renderAllVideoResults(stored_youtube_searches){
                      <img class="" onclick="getVideo()"src="${thumbnail}" alt="Next slide">
                     <h5 class="video-title">${title}</h5>
                     <p class=video-description">Description: ${description}</p>
-                    <p class="video-views">Number of Views: ${number_of_views}</p>
                     <p class="video-published">Date Uploaded: ${published_time}</p>
-                    <p class="video-length">Video Length: ${video_length}</p>
                     <button data-source="${videoID}" id="video-button" class="video-button btn btn-primary" >Watch Video</button>
                     </div></div>`
             }
@@ -456,14 +463,8 @@ function renderAllVideoResults(stored_youtube_searches){
         let videoHeader = `<h4>Video Results</h4>`
     videoEl = videoHeader + videoTop + videoMid + videoEnd
     $('#video-results').append(videoEl)
-    
     }
-
-
 }
-
-$('')
-
 
 $(".results").on("click", "#video-button", function () {
     let id = $(this).attr('data-source')
@@ -472,10 +473,6 @@ $(".results").on("click", "#video-button", function () {
     $('.video-display').css('display','flex')
     $('.video-display').removeClass('hidden')
 })
-
-
-
-
 
 /*
 -------
