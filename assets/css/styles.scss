@@ -156,15 +156,19 @@ header {
     margin: 15px 0;
     border: 2px solid var(--primary-dark)
 }
+
 .video-title{
     color:#EB5543;
+    padding-top: 15px;
 }
+
 .video-description, .video-views, .video-length, .video-published{
     text-overflow: clip;
     white-space: nowrap;
     text-align: center;
     color: black;
 }
+
 .video{
     margin: 40px 0;
     aspect-ratio: 16/9;
@@ -223,7 +227,7 @@ header {
 
 .card {
     width: 200px;
-    height: 200px;
+    min-height: 200px;
     margin: 10px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
     rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;

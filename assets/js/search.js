@@ -100,6 +100,7 @@ let renderAllNews = function (newCall) {
     $('#news-results').empty().append(`<h4>Top Stories</h4>`);
     $('#sports-results').empty().append(`<h4>Sports</h4>`);
     $('#video-results').empty();
+    $('#video-container').empty();
     if (stored_news == null) {
         stored_news = []
     }
@@ -310,13 +311,13 @@ let renderAllNews = function (newCall) {
                 renderCustomInterests(userData.stored_interests);
             }).then(() => {
                 // Get blog content with the first interest
-                console.log('call medium API from search.js')
-                callMediumAPI(userData.topics[0]);
+                console.log('call medium API from search.js', newCall)
+                callMediumAPI(userData.topics[0], newCall);
             });
         })
     } else if (stored_interests.length > 0) {
         renderCustomInterests(userData.stored_interests);
-        callMediumAPI(userData.topics[0]);
+        callMediumAPI(userData.topics[0], newCall);
     }
 
     function renderCustomInterests() {
@@ -365,7 +366,6 @@ let renderAllNews = function (newCall) {
     if (newCall) {
         // Fetch some results for youtube
         let youtube_search = userData.topics[0];
-        console.log('new youtube search')
         searchYoutube(youtube_search);
     } else if (stored_youtube_searches.length > 0) {
         renderAllVideoResults(stored_youtube_searches);
@@ -376,7 +376,6 @@ function searchYoutube(youtube_search) {
     fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${youtube_search}&type=video&key=AIzaSyBdWjXYYmyEctduqjw4J8BTYuYDlLxOjm4`)
         .then(response => response.json())
         .then(function (response) {
-            console.log(response.items);
             stored_youtube_searches = response.items
             userData.stored_youtube_searches = stored_youtube_searches
             localStorage.setItem('userData', JSON.stringify(userData))
@@ -404,8 +403,7 @@ function renderAllVideoResults(stored_youtube_searches) {
         $(stored_youtube_searches).each(function () {
             count++
             let description = $(this)[0].snippet.description
-            let published_time = $(this)[0].snippet.publishTime
-            let thumbnail = $(this)[0].snippet.thumbnails.default.url
+            let thumbnail = $(this)[0].snippet.thumbnails.high.url
 
             //Note: if we want to get more details about the video, like length, there is a separate api call that we can make - https://www.googleapis.com/youtube/v3/videos?id=9bZkp7q19f0&part=contentDetails&key={YOUR_API_KEY}
 
@@ -416,16 +414,14 @@ function renderAllVideoResults(stored_youtube_searches) {
                 videoMid = videoMid + `<div class="carousel-item active"><div class="carousel-item-inner video-result" style="background-image: url(); ">
                     <img class=""  src="${thumbnail}" alt="First slide">
                     <h5 class="video-title">${title}</h5>
-                    <p class=video-description">Description: ${description}</p>
-                    <p class="video-published">Date Uploaded: ${published_time}</p>
+                    <p class=video-description"><span style="font-weight: bold">Description: </span>${description}</p>
                     <button data-source="${videoID}" id="video-button"class="video-button btn btn-primary">Watch Video</button>
                     </div></div>`
             } else {
                 videoMid = videoMid + `<div class="carousel-item"><div class="carousel-item-inner video-result" style="background-image: url()">
                      <img class="" onclick="getVideo()"src="${thumbnail}" alt="Next slide">
                     <h5 class="video-title">${title}</h5>
-                    <p class=video-description">Description: ${description}</p>
-                    <p class="video-published">Date Uploaded: ${published_time}</p>
+                    <p class=video-description"><span style="font-weight: bold">Description: </span>${description}</p>
                     <button data-source="${videoID}" id="video-button" class="video-button btn btn-primary" >Watch Video</button>
                     </div></div>`
             }
@@ -557,7 +553,7 @@ Get offline-readable content from Medium API
 -------
 */
 
-function callMediumAPI(topicToSearch, refresh = false) {
+function callMediumAPI(topicToSearch, newCall) {
     const options = {
         method: 'GET',
         headers: {
@@ -567,10 +563,10 @@ function callMediumAPI(topicToSearch, refresh = false) {
     };
 
     //If we have content just render it
-    if (storedBlogPostContent.length) {
+    if (storedBlogPostContent.length && newCall === false) {
         // We have some content, render the divs
         renderBlogItems(storedBlogPostContent);
-    } else {
+    } else if (newCall) {
         // If we don't have any content, get it from the API
         let tempData = [];
         if (topicToSearch) {
@@ -583,7 +579,6 @@ function callMediumAPI(topicToSearch, refresh = false) {
                     if (userData.stored_blog_post_ids.length > 0) {
                         userData.stored_blog_post_ids = userData.stored_blog_post_ids.slice(0, 1);
                         userData.stored_blog_post_ids.forEach(function (id, index) {
-                            console.log('api call medium2, ', index)
                             //This API only gets the metadata
                             fetch(`https://medium2.p.rapidapi.com/article/${id}`, options)
                                 .then(response => response.json())
