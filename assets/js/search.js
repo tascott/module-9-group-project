@@ -112,7 +112,6 @@ let renderAllNews = function () {
     $('#news-results').empty().append(`<h4>Top Stories</h4>`);
     $('#sports-results').empty().append(`<h4>Sports</h4>`);
     $('#interest-results').empty().append(`<h4>Personalised Results</h4>`);
-    $('#video-results').empty().append(`<h4>Video Results</h4>`)
     if (stored_news == null) {
         stored_news = []
     }
@@ -425,14 +424,14 @@ function renderAllVideoResults(stored_youtube_searches){
     if(stored_youtube_searches){
         $(stored_youtube_searches).each(function () {
             count++
-            let channel_id = $(this)[0].channel_id 
+            let channel_id = $(this)[0].channel_id
             let description = $(this)[0].description
             let number_of_views = $(this)[0].number_of_views
             let published_time = $(this)[0].published_time
             let thumbnail = $(this)[0].thumbnails[0].url
-         
-            let title = $(this)[0].title 
-            let videoID = $(this)[0].video_id 
+
+            let title = $(this)[0].title
+            let videoID = $(this)[0].video_id
             let video_length = $(this)[0].video_length
             if (count == 1) {
                 videoMid = videoMid + `<div class="carousel-item active"><div class="carousel-item-inner video-result" style="background-image: url(); ">
@@ -472,9 +471,8 @@ $(".results").on("click", "#video-button", function () {
     let id = $(this).attr('data-source')
     let src = `https://www.youtube.com/embed/${id}`
     $('#video-element').attr('src', src)
-    $('#video-results').hide()
-    $('#video-container').css('display','block')
-
+    $('.video-display').css('display','flex')
+    $('.video-display').removeClass('hidden')
 })
 
 
