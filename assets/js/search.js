@@ -108,7 +108,6 @@ let renderAllNews = function () {
 
     $('#news-results').empty().append(`<h4>Top Stories</h4>`);
     $('#sports-results').empty().append(`<h4>Sports</h4>`);
-    $('#interest-results').empty().append(`<h4>Personalised Results</h4>`);
     if (stored_news == null) {
         stored_news = []
     }
@@ -328,6 +327,7 @@ let renderAllNews = function () {
     }
 
     function renderCustomInterests() {
+        $('#interest-results').empty().append(`<h4>Personalised Web Results</h4>`);
         let stored_interests = userData.stored_interests;
         let interestsTemp = `<div id="carouselExampleControls3" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">`
@@ -663,7 +663,7 @@ function renderBlogItems(list) {
         `
 
         blogDiv.html(html);
-        blogDiv.prepend(`<h2>Blogs</h2><h6>Available offline</h6>`);
+        blogDiv.prepend(`<h2>Personalised Blog Results</h2><h6>Available offline</h6>`);
     })
 };
 
