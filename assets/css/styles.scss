@@ -145,9 +145,46 @@ header {
     background-color: #EB5543;
 }
 
-#news-results, #video-results, #blog-results, #sports-results, #interest-results, {
+
+#video-results{
+    background-color: #348aa7;
+}
+
+.video-result{
+    background-size: 50%;
+    color: #fff;
+}
+#news-results, #video-results, #blog-results, #sports-results, #interest-results {
     align-items: center;
     padding: 15px;
+}
+.video-title{
+    color:#EB5543;
+}
+.video-description{
+    text-overflow: clip;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.video-button{
+
+}
+
+.youtube-choice{
+    margin-top: 1.5rem;
+    background-color:#EB5543;
+    width: 3rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-left: 13rem;
+
+
+    
+
+}
+#youtube-search{
+    margin-top: 4rem;
 }
 
 #suggestion-results {
