@@ -93,9 +93,12 @@ $('#search-button').click(function () {
 $('#search-youtube').click(searchYoutube)
 
 
-function videoChoice(){
+function videoSelection(){
     let selection = $('#youtube-search').val()
-    let selectionEl = `<button></button>`
+    let selectionEl = `<button id="selection-element">${selection}</button>`
+    let removeEl = `<i class="fa-regular fa-circle-x"></i>`
+    searchYoutube(selection)
+
 
 }
 
@@ -377,9 +380,9 @@ let renderAllNews = function () {
 
 
 
-function searchYoutube(){
-    if(youtube_search){
-        youtube_search = youtube_search.val()
+function searchYoutube(selection){
+    if(selection){
+        youtube_search = selection
         youtube_search = encodeURIComponent(youtube_search)
         const settings = {
             "async": true,
