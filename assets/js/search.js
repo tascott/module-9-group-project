@@ -87,7 +87,7 @@ $('#search-button').click(function () {
     if ($('#suggestion-text').val() != '') {
         addWordToSearch($('#suggestion-text').val());
     }
-    renderAllNews();
+    renderAllNews(newCall = true);
 });
 
 $('#search-youtube').click(searchYoutube)
@@ -99,7 +99,7 @@ function videoChoice(){
 
 }
 
-let renderAllNews = function () {
+let renderAllNews = function (newCall) {
     let time;
     if (userData.time) {
         time = userData.time;
@@ -294,7 +294,7 @@ let renderAllNews = function () {
     }
 
     // If we have a topic but no data yet, fetch some data
-    if (stored_interests.length < 1 && userData.topics.length > 0) {
+    if ((stored_interests.length < 1 && userData.topics.length > 0) || newCall) {
     // Fetch some results for interests
         let interests = userData.topics;
         interests.forEach((interest) => {
@@ -311,6 +311,7 @@ let renderAllNews = function () {
             };
 
             $.ajax(settings).done(function (response) {
+                console.log('call contextual web API from search.js')
                 stored_interests = response.value
                 userData.stored_interests = stored_interests;
                 localStorage.setItem('userData', JSON.stringify(userData));
@@ -581,7 +582,7 @@ function calculateAndDisplayRoute(directionsService) {
 };
 
 // Render the content on page load (if we have any)
-renderAllNews();
+renderAllNews(newCall = false);
 
 /*
 -------
