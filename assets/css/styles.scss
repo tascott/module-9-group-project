@@ -176,13 +176,15 @@ header {
 .video{
     margin-top: 40px;
     aspect-ratio: 16/9;
-    width: 100%;
+    width: 50%;
     
 }
 
 .video-display{
   background-color: rgba(255, 255, 255, 0.7);
   overflow: hidden;
+  display: flex;
+  justify-content: center;
     
 }
 .youtube-video{

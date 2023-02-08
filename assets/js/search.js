@@ -16,7 +16,6 @@ if (userDataFromStorage == null) {
         "stored_news": [],
         "stored_interests": [],
         "stored_sports": [],
-        "stored_videos": [],
         "stored_youtube_searches": [],
         "stored_blog_content": [],
         "stored_blog_post_ids": [],
@@ -38,7 +37,7 @@ let stored_videos = userData.stored_videos
 let blogDiv = $('#blog-results');
 let articleModal = document.getElementById('article-modal');
 let stored_youtube_searches = userData.stored_youtube_searches
-
+let videoID
 // Toggle between manual time entry and google search
 $('#manually-enter').click(function () {
     $('.search-time').show();
@@ -94,7 +93,11 @@ $('#search-button').click(function () {
 $('#search-youtube').click(searchYoutube)
 
 
+function videoChoice(){
+    let selection = $('#youtube-search').val()
+    let selectionEl = `<button></button>`
 
+}
 
 let renderAllNews = function () {
     let time;
@@ -106,6 +109,7 @@ let renderAllNews = function () {
     $('#news-results').empty().append(`<h4>Top Stories</h4>`);
     $('#sports-results').empty().append(`<h4>Sports</h4>`);
     $('#interest-results').empty().append(`<h4>Personalised Results</h4>`);
+    $('#video-results').empty().append(`<h4>Video Results</h4>`)
     if (stored_news == null) {
         stored_news = []
     }
@@ -192,7 +196,6 @@ let renderAllNews = function () {
         $('#news-results').append(temp)
     }
 
-    // Render some sports info if we don't have any already
     if (stored_sports.length == 0) {
         settings = {
             "async": true,
@@ -367,8 +370,6 @@ let renderAllNews = function () {
         $('#interest-results').append(temp)
     }
 
-    // video search
-    //let youtubeQueryString = new URLSearchParams(youtube_search).toString();
     
 
    
@@ -428,7 +429,7 @@ function renderAllVideoResults(stored_youtube_searches){
             let thumbnail = $(this)[0].thumbnails[0].url
          
             let title = $(this)[0].title 
-            let video_id = $(this)[0].video_id 
+            let videoID = $(this)[0].video_id 
             let video_length = $(this)[0].video_length
             if (count == 1) {
                 videoMid = videoMid + `<div class="carousel-item active"><div class="carousel-item-inner video-result" style="background-image: url(); ">
@@ -438,7 +439,7 @@ function renderAllVideoResults(stored_youtube_searches){
                     <p class="video-views">Number of Views: ${number_of_views}</p>
                     <p class="video-published">Date Uploaded: ${published_time}</p>
                     <p class="video-length">Video Length: ${video_length}</p>
-                    <button onclick="playVideo()"id="video-button"class="video-button btn btn-primary">Watch Video</button>
+                    <button data-source="${videoID}" id="video-button"class="video-button btn btn-primary">Watch Video</button>
                     </div></div>`
             } else {
                 videoMid = videoMid + `<div class="carousel-item"><div class="carousel-item-inner video-result" style="background-image: url()">
@@ -448,7 +449,7 @@ function renderAllVideoResults(stored_youtube_searches){
                     <p class="video-views">Number of Views: ${number_of_views}</p>
                     <p class="video-published">Date Uploaded: ${published_time}</p>
                     <p class="video-length">Video Length: ${video_length}</p>
-                    <button onclick="playVideo()"id="video-button" class="video-button btn btn-primary" >Watch Video</button>
+                    <button data-source="${videoID}" id="video-button" class="video-button btn btn-primary" >Watch Video</button>
                     </div></div>`
             }
         })
@@ -461,20 +462,17 @@ function renderAllVideoResults(stored_youtube_searches){
 
 }
 
-function getVideo(videoID,title)
-{
-   
-}
+$('')
 
-function playVideo()
-{
-    console.log('hello')
-    let src = `https://www.youtube.com/embed/Nw8nmeH1Vig`
+
+$(".results").on("click", "#video-button", function () {
+    let id = $(this).attr('data-source')
+    let src = `https://www.youtube.com/embed/${id}`
+    $('#video-element').attr('src', src)
     $('#video-results').hide()
     $('#video-container').css('display','block')
-    $('#video-element').attr('src',src)
-}
-$('#video-button').click(getVideo)
+
+})
 
 
 
