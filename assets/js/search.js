@@ -206,7 +206,7 @@ let renderAllNews = function () {
         settings = {
             "async": true,
             "crossDomain": true,
-            "url": "https://api-football-v1.p.rapidapi.com/v3/fixtures?league=39&season=2020",
+            "url": "https://api-football-v1.p.rapidapi.com/v3/fixtures?league=39&season=2022",
             "method": "GET",
             "headers": {
                 "X-RapidAPI-Key": "289a29c09emsh67b645d76a420f4p19e2ffjsn3ff56d782897",
@@ -382,33 +382,32 @@ let renderAllNews = function () {
         $('#interest-results').append(temp)
     }
 
-        if(selection){
-            let number = time > 30 ? 10 : 5
-            youtube_search = selection
-            youtube_search = encodeURIComponent(youtube_search)
-            const settings = {
-                "async": true,
-                "crossDomain": true,
-                "url": `https://youtube-search6.p.rapidapi.com/search/?query=${youtube_search}&number=${number}&country=us&lang=en`,
-                "method": "GET",
-                "headers": {
-                    "X-RapidAPI-Key": "289a29c09emsh67b645d76a420f4p19e2ffjsn3ff56d782897",
-                    "X-RapidAPI-Host": "youtube-search6.p.rapidapi.com"
-                }
-            };
+    if(selection){
+        let number = time > 30 ? 10 : 5
+        youtube_search = selection
+        youtube_search = encodeURIComponent(youtube_search)
+        const settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": `https://youtube-search6.p.rapidapi.com/search/?query=${youtube_search}&number=${number}&country=us&lang=en`,
+            "method": "GET",
+            "headers": {
+                "X-RapidAPI-Key": "289a29c09emsh67b645d76a420f4p19e2ffjsn3ff56d782897",
+                "X-RapidAPI-Host": "youtube-search6.p.rapidapi.com"
+            }
+        };
             
-            $.ajax(settings).done(function (response) {
-            
-                stored_youtube_searches = response.videos
-                stored_youtube_searches = stored_youtube_searches.filter(function(elem){
-                    return elem[0].video_length < time
-                })
-                userData.stored_youtube_searches = stored_youtube_searches
-                localStorage.setItem('userData', JSON.stringify(userData))
-                renderAllVideoResults(stored_youtube_searches)
-                
+        $.ajax(settings).done(function (response) {
+            stored_youtube_searches = response.videos
+            stored_youtube_searches = stored_youtube_searches.filter(function(elem){
+                return elem[0].video_length < time
+            })
+            userData.stored_youtube_searches = stored_youtube_searches
+            localStorage.setItem('userData', JSON.stringify(userData))
+            renderAllVideoResults(stored_youtube_searches)        
             });
-        }else if(stored_youtube_searches && !selection){
+        }
+        else if(stored_youtube_searches && !selection){
             renderAllVideoResults(stored_youtube_searches)
         }
     
