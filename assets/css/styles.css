@@ -110,26 +110,21 @@ header {
 
 #sports-results {
   margin-top: 40px;
-  background-color: #EBA943;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, white 100%);
   min-height: 200px; }
-
-#interest-results {
-  background-color: #EB5543; }
 
 .video-container {
   height: 50rem;
   display: none; }
 
-#video-results {
-  background-color: #348aa7; }
-
 .video-result {
-  background-size: 50%;
-  color: #fff; }
+  background-size: 50%; }
 
 #news-results, #video-results, #blog-results, #sports-results, #interest-results {
   align-items: center;
-  padding: 15px; }
+  padding: 15px;
+  margin: 15px 0;
+  border: 2px solid var(--primary-dark); }
 
 .video-title {
   color: #EB5543; }
@@ -153,12 +148,10 @@ header {
   display: none; }
 
 .youtube-video {
-  max-height: 100%;
-  background-color: #348aa7; }
+  max-height: 100%; }
 
 .youtube-choice {
   margin-top: 1.5rem;
-  background-color: #EB5543;
   width: 3rem;
   text-overflow: ellipsis;
   white-space: nowrap;

@@ -90,15 +90,6 @@ $('#search-button').click(function () {
     renderAllNews(newCall = true);
 });
 
-$('#search-youtube').click(searchYoutube)
-
-
-function videoChoice(){
-    let selection = $('#youtube-search').val()
-    let selectionEl = `<button></button>`
-
-}
-
 let renderAllNews = function (newCall) {
     let time;
     if (userData.time) {
@@ -108,6 +99,7 @@ let renderAllNews = function (newCall) {
 
     $('#news-results').empty().append(`<h4>Top Stories</h4>`);
     $('#sports-results').empty().append(`<h4>Sports</h4>`);
+    $('#video-results').empty();
     if (stored_news == null) {
         stored_news = []
     }
@@ -289,13 +281,13 @@ let renderAllNews = function (newCall) {
                 temp = temp + `</div></div>`
             }
         }
-            temp = sportsTemp + temp + tempEnd
-            $('#sports-results').append(temp)
+        temp = sportsTemp + temp + tempEnd
+        $('#sports-results').append(temp)
     }
 
     // If we have a topic but no data yet, fetch some data
     if ((stored_interests.length < 1 && userData.topics.length > 0) || newCall) {
-    // Fetch some results for interests
+        // Fetch some results for interests
         let interests = userData.topics;
         interests.forEach((interest) => {
             queryString = new URLSearchParams(interest).toString();
@@ -367,43 +359,21 @@ let renderAllNews = function (newCall) {
             }
         })
         temp = interestsTemp + temp + tempEnd
-        $('#interest-results').append(temp)
+        $('#interest-results').removeClass('hidden').append(temp);
     }
 
-    
-
-   
-};
-
-
-
-function searchYoutube(){
-    if(youtube_search){
-        youtube_search = youtube_search.val()
-        youtube_search = encodeURIComponent(youtube_search)
-        const settings = {
-            "async": true,
-            "crossDomain": true,
-            "url": `https://youtube-search6.p.rapidapi.com/search/?query=${youtube_search}&number=10&country=us&lang=en`,
-            "method": "GET",
-            "headers": {
-                "X-RapidAPI-Key": "289a29c09emsh67b645d76a420f4p19e2ffjsn3ff56d782897",
-                "X-RapidAPI-Host": "youtube-search6.p.rapidapi.com"
-            }
-        };
-        
-        $.ajax(settings).done(function (response) {
-        
-            stored_youtube_searches = response.videos
-            userData.stored_youtube_searches = stored_youtube_searches
-            localStorage.setItem('userData', JSON.stringify(userData))
-            renderAllVideoResults(stored_youtube_searches)
-            
-        });
+    if (newCall) {
+        // Fetch some results for youtube
+        let youtube_search = userData.topics[0];
+        console.log('new youtube search')
+        searchYoutube(youtube_search);
+    } else if (stored_youtube_searches.length > 0) {
+        renderAllVideoResults(stored_youtube_searches);
     }
-
+}
+function searchYoutube(youtube_search) {
     // fetch from youtube api
-        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${youtube_search}&type=video&key=AIzaSyBdWjXYYmyEctduqjw4J8BTYuYDlLxOjm4`)
+    fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${youtube_search}&type=video&key=AIzaSyBdWjXYYmyEctduqjw4J8BTYuYDlLxOjm4`)
         .then(response => response.json())
         .then(function (response) {
             console.log(response.items);
@@ -412,9 +382,9 @@ function searchYoutube(){
             localStorage.setItem('userData', JSON.stringify(userData))
             renderAllVideoResults(stored_youtube_searches)
         });
-        }
+}
 
-function renderAllVideoResults(stored_youtube_searches){
+function renderAllVideoResults(stored_youtube_searches) {
     let videoEl
     let videoMid = ``
     let videoTop = `<div id="carouselExampleControls4" class="carousel slide" data-ride="carousel">
@@ -430,7 +400,7 @@ function renderAllVideoResults(stored_youtube_searches){
             </a>
             </div>`
     let count = 0
-    if(stored_youtube_searches){
+    if (stored_youtube_searches) {
         $(stored_youtube_searches).each(function () {
             count++
             let description = $(this)[0].snippet.description
@@ -461,8 +431,8 @@ function renderAllVideoResults(stored_youtube_searches){
             }
         })
         let videoHeader = `<h4>Video Results</h4>`
-    videoEl = videoHeader + videoTop + videoMid + videoEnd
-    $('#video-results').append(videoEl)
+        videoEl = videoHeader + videoTop + videoMid + videoEnd
+        $('#video-results').removeClass('hidden').append(videoEl)
     }
 }
 
@@ -660,7 +630,7 @@ function renderBlogItems(list) {
         </div>
         `
 
-        blogDiv.html(html);
+        blogDiv.removeClass('hidden').html(html);
         blogDiv.prepend(`<h2>Personalised Blog Results</h2><h6>Available offline</h6>`);
     })
 };
