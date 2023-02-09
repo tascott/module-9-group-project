@@ -1,6 +1,16 @@
 // THIS IS THE ONLY SCRIPT FOR SEARCHING.accordion
 let userData;
 
+let news_api_key = "289a29c09emsh67b645d76a420f4p19e2ffjsn3ff56d782897"
+let scraping_api_key = "ee598a5176bcff8a001430785a2c2f13"
+let geo_location_api_key = "7df6a76ea4514eea927d16b51bf0db15"
+let ip_data_api_key = "bbc2f6625e793cee6f44ce8c3e4030912a920a3af856798d5bc00a6d"
+let city_mapper_api_key = "0Lo8eqdPbvoQaXMZQhJd3kRhokzEyoe1"
+let words_api_key = "289a29c09emsh67b645d76a420f4p19e2ffjsn3ff56d782897"
+let travel_api_key = "ecf4dd6b0ede919a80eea9281fb1c1bf"
+let google_maps_api_key = "AIzaSyDhxwG_aoHjYV5j28YqnNan8Ba4lJBfoEs"
+let mediumAPIKey = "289a29c09emsh67b645d76a420f4p19e2ffjsn3ff56d782897"
+let contextual_web_api_key = "289a29c09emsh67b645d76a420f4p19e2ffjsn3ff56d782897"
 // Update the user object with the data from local storage, if none, set params to null and we'll set it later
 let userDataFromStorage = JSON.parse(localStorage.getItem('userData'));
 if (userDataFromStorage == null) {
