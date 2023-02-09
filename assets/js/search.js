@@ -392,7 +392,7 @@ let renderAllNews = function () {
             "url": `https://youtube-search6.p.rapidapi.com/search/?query=${youtube_search}&number=${number}&country=us&lang=en`,
             "method": "GET",
             "headers": {
-                "X-RapidAPI-Key": "289a29c09emsh67b645d76a420f4p19e2ffjsn3ff56d782897",
+                "X-RapidAPI-Key": "79525648bbmsh3acf864b288976cp1e3409jsn56c274c27ea0",
                 "X-RapidAPI-Host": "youtube-search6.p.rapidapi.com"
             }
         };
@@ -400,7 +400,17 @@ let renderAllNews = function () {
         $.ajax(settings).done(function (response) {
             stored_youtube_searches = response.videos
             stored_youtube_searches = stored_youtube_searches.filter(function(elem){
-                return elem[0].video_length < time
+               if(elem.video_length.length > 5)
+               {
+                    let t= elem.video_length.split(':')
+                    let min = (+t[0]) * 60 + (+t[1])
+                    return min < time
+
+               }else{
+                let t = elem.video_length.split(':')
+                let min = (+t[0])
+                return min < time
+               } 
             })
             userData.stored_youtube_searches = stored_youtube_searches
             localStorage.setItem('userData', JSON.stringify(userData))
