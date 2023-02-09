@@ -10,9 +10,8 @@ The group project is a collaboration between jamellknows and tascott to create a
 
 The following image shows a demo web application's appearance and functionality:
 
-![commuteMe demo]
 
-
+![217798917-1be756ba-e694-4538-8b07-77e0b8d6ee98](https://user-images.githubusercontent.com/18272434/217855159-b564bb0f-6c67-4d1d-91ab-c49982a80516.png)
 
 
 
