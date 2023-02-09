@@ -202,11 +202,13 @@ header {
   width: 3rem;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin-left: 13rem;
 }
 
 #youtube-search {
   margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #suggestion-results {

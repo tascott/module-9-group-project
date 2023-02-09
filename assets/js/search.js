@@ -97,7 +97,6 @@ $('#search-youtube').click(youtubeSelection)
 function youtubeSelection(){
     selection = $('#youtube-text').val()
     let selectionEl = `<button class = "btn btn-primary" id="selection-element">${selection}</button>`
-    let removeEl = `<i style ="color: red; height: 20px; width: 20px;"class="fa-regular fa-circle-x"></i>`
     $(removeEl).click(function(){
         $('#youtube-selection').empty()
     })
