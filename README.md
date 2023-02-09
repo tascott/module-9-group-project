@@ -22,6 +22,7 @@ Calculate the time it will take to travel to your destination or maunally enter 
 .
 
 ### Deployed At:
+https://tascott.github.io/module-9-group-project
 
 
 
@@ -29,7 +30,7 @@ Calculate the time it will take to travel to your destination or maunally enter 
 
 MIT License
 
-Copyright (c) [2022] [jamellknows]
+Copyright (c) [2023] [jamellknows] [tascott]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -55,10 +56,14 @@ SOFTWARE.
 
 ## Features
 
-* web API's
-* local storage
-* weather icons
+* Maps API
+* Local Storage
+* Sports API
 * Easy to use UI
+* Blogs API
+* Youtube API
+* News API
+
 
 
 
