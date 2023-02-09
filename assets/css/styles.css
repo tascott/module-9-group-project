@@ -215,6 +215,10 @@ header {
   flex-wrap: wrap;
 }
 
+#selection-element {
+  margin-top: 1rem;
+}
+
 .badge {
   background-color: var(--primary-dark);
   color: white;
