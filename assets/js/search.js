@@ -398,7 +398,8 @@ let renderAllNews = function () {
 }
 function searchYoutube(youtube_search) {
     // fetch from youtube api
-    fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${youtube_search}&type=video&key=AIzaSyBdWjXYYmyEctduqjw4J8BTYuYDlLxOjm4`)
+    let pageNumber = time > 30 ? 10 : 5
+    fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${pageNumber}&q=${youtube_search}&type=video&key=AIzaSyBdWjXYYmyEctduqjw4J8BTYuYDlLxOjm4`)
         .then(response => response.json())
         .then(function (response) {
             stored_youtube_searches = response.items
@@ -660,23 +661,23 @@ function renderBlogItems(list) {
 };
 
 
-// Put blog content in a modal for offline reading
+Put blog content in a modal for offline reading
 
-// articleModal.addEventListener('show.bs.modal', function (event) {
-//     // Button that triggered the modal
-//     var button = event.relatedTarget
-//     // Extract info from data-bs-* attributes
-//     var title = button.getAttribute('data-bs-title')
-//     var content = button.getAttribute('data-bs-content')
-//     var url = button.getAttribute('data-bs-url')
-//     // If necessary, you could initiate an AJAX request here
-//     // and then do the updating in a callback.
+articleModal.addEventListener('show.bs.modal', function (event) {
+    // Button that triggered the modal
+    var button = event.relatedTarget
+    // Extract info from data-bs-* attributes
+    var title = button.getAttribute('data-bs-title')
+    var content = button.getAttribute('data-bs-content')
+    var url = button.getAttribute('data-bs-url')
+    // If necessary, you could initiate an AJAX request here
+    // and then do the updating in a callback.
 
-//     var modalTitle = articleModal.querySelector('.modal-title')
-//     var modalBodyInput = articleModal.querySelector('.modal-text')
-//     var modalUrl = articleModal.querySelector('.url')
+    var modalTitle = articleModal.querySelector('.modal-title')
+    var modalBodyInput = articleModal.querySelector('.modal-text')
+    var modalUrl = articleModal.querySelector('.url')
 
-//     modalUrl.attributes.href.value = url;
-//     modalTitle.textContent = title;
-//     $(modalBodyInput).html(content)
-// })
+    modalUrl.attributes.href.value = url;
+    modalTitle.textContent = title;
+    $(modalBodyInput).html(content)
+})
