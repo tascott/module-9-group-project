@@ -97,11 +97,8 @@ $('#search-youtube').click(youtubeSelection)
 function youtubeSelection(){
     selection = $('#youtube-text').val()
     let selectionEl = `<button class = "btn btn-primary" id="selection-element">${selection}</button>`
-    $(removeEl).click(function(){
-        $('#youtube-selection').empty()
-    })
+
     $('#youtube-selection').empty().append(selectionEl)
-    $('#youtube-selection').append(removeEl)
 
 
 }
