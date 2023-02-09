@@ -407,9 +407,9 @@ function searchYoutube(youtube_search) {
             renderAllVideoResults(stored_youtube_searches)        
             });
         }
-        else if(stored_youtube_searches && !selection){
-            renderAllVideoResults(stored_youtube_searches)
-        });
+        // elif(stored_youtube_searches && !selection){
+        //     renderAllVideoResults(stored_youtube_searches)
+        // };
 }
 
 function renderAllVideoResults(stored_youtube_searches) {
@@ -662,21 +662,21 @@ function renderBlogItems(list) {
 
 // Put blog content in a modal for offline reading
 
-articleModal.addEventListener('show.bs.modal', function (event) {
-    // Button that triggered the modal
-    var button = event.relatedTarget
-    // Extract info from data-bs-* attributes
-    var title = button.getAttribute('data-bs-title')
-    var content = button.getAttribute('data-bs-content')
-    var url = button.getAttribute('data-bs-url')
-    // If necessary, you could initiate an AJAX request here
-    // and then do the updating in a callback.
+// articleModal.addEventListener('show.bs.modal', function (event) {
+//     // Button that triggered the modal
+//     var button = event.relatedTarget
+//     // Extract info from data-bs-* attributes
+//     var title = button.getAttribute('data-bs-title')
+//     var content = button.getAttribute('data-bs-content')
+//     var url = button.getAttribute('data-bs-url')
+//     // If necessary, you could initiate an AJAX request here
+//     // and then do the updating in a callback.
 
-    var modalTitle = articleModal.querySelector('.modal-title')
-    var modalBodyInput = articleModal.querySelector('.modal-text')
-    var modalUrl = articleModal.querySelector('.url')
+//     var modalTitle = articleModal.querySelector('.modal-title')
+//     var modalBodyInput = articleModal.querySelector('.modal-text')
+//     var modalUrl = articleModal.querySelector('.url')
 
-    modalUrl.attributes.href.value = url;
-    modalTitle.textContent = title;
-    $(modalBodyInput).html(content)
-});
+//     modalUrl.attributes.href.value = url;
+//     modalTitle.textContent = title;
+//     $(modalBodyInput).html(content)
+// })
