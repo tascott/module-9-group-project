@@ -1,4 +1,4 @@
-# Module-9-Group-Project-CommuteME
+# Module-9-Group-Project-CommuteThings
 
 ## Overview
 
@@ -68,5 +68,5 @@ SOFTWARE.
 
 ---
 
-© 2022 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.
+© 2023 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.
 
