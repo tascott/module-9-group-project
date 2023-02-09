@@ -661,7 +661,7 @@ function renderBlogItems(list) {
 };
 
 
-Put blog content in a modal for offline reading
+//Put blog content in a modal for offline reading
 
 articleModal.addEventListener('show.bs.modal', function (event) {
     // Button that triggered the modal
@@ -680,4 +680,4 @@ articleModal.addEventListener('show.bs.modal', function (event) {
     modalUrl.attributes.href.value = url;
     modalTitle.textContent = title;
     $(modalBodyInput).html(content)
-})
+});
