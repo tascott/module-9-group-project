@@ -38,6 +38,7 @@ let blogDiv = $('#blog-results');
 let articleModal = document.getElementById('article-modal');
 let stored_youtube_searches = userData.stored_youtube_searches
 let videoID
+let selection
 // Toggle between manual time entry and google search
 $('#manually-enter').click(function () {
     $('.search-time').show();
@@ -90,12 +91,19 @@ $('#search-button').click(function () {
     renderAllNews(newCall = true);
 });
 
-$('#search-youtube').click(searchYoutube)
+$('#search-youtube').click(youtubeSelection)
 
 
-function videoChoice(){
-    let selection = $('#youtube-search').val()
-    let selectionEl = `<button></button>`
+function youtubeSelection(){
+    selection = $('#youtube-text').val()
+    let selectionEl = `<button class = "btn btn-primary" id="selection-element">${selection}</button>`
+    let removeEl = `<i style ="color: red; height: 20px; width: 20px;"class="fa-regular fa-circle-x"></i>`
+    $(removeEl).click(function(){
+        $('#youtube-selection').empty()
+    })
+    $('#youtube-selection').empty().append(selectionEl)
+    $('#youtube-selection').append(removeEl)
+
 
 }
 
@@ -198,7 +206,7 @@ let renderAllNews = function (newCall) {
         settings = {
             "async": true,
             "crossDomain": true,
-            "url": "https://api-football-v1.p.rapidapi.com/v3/fixtures?league=39&season=2020",
+            "url": "https://api-football-v1.p.rapidapi.com/v3/fixtures?league=39&season=2022",
             "method": "GET",
             "headers": {
                 "X-RapidAPI-Key": "289a29c09emsh67b645d76a420f4p19e2ffjsn3ff56d782897",
@@ -296,13 +304,18 @@ let renderAllNews = function (newCall) {
     // If we have a topic but no data yet, fetch some data
     if ((stored_interests.length < 1 && userData.topics.length > 0) || newCall) {
     // Fetch some results for interests
+        let pageNumber
+        if(time > 30){
+            pageNumber = 10
+        }
+        pageNumber = 5
         let interests = userData.topics;
         interests.forEach((interest) => {
             queryString = new URLSearchParams(interest).toString();
             const settings = {
                 "async": true,
                 "crossDomain": true,
-                "url": `https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/Search/ImageSearchAPI?q=${queryString}&pageNumber=1&pageSize=10&autoCorrect=true`,
+                "url": `https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/Search/ImageSearchAPI?q=${queryString}&pageNumber=1&pageSize=${pageNumber}&autoCorrect=true`,
                 "method": "GET",
                 "headers": {
                     "X-RapidAPI-Key": contextual_web_api_key,
@@ -370,6 +383,46 @@ let renderAllNews = function (newCall) {
         $('#interest-results').append(temp)
     }
 
+    if(selection){
+        let number = time > 30 ? 10 : 5
+        youtube_search = selection
+        youtube_search = encodeURIComponent(youtube_search)
+        const settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": `https://youtube-search6.p.rapidapi.com/search/?query=${youtube_search}&number=${number}&country=us&lang=en`,
+            "method": "GET",
+            "headers": {
+                "X-RapidAPI-Key": "79525648bbmsh3acf864b288976cp1e3409jsn56c274c27ea0",
+                "X-RapidAPI-Host": "youtube-search6.p.rapidapi.com"
+            }
+        };
+            
+        $.ajax(settings).done(function (response) {
+            stored_youtube_searches = response.videos
+            stored_youtube_searches = stored_youtube_searches.filter(function(elem){
+               if(elem.video_length.length > 5)
+               {
+                    let t= elem.video_length.split(':')
+                    let min = (+t[0]) * 60 + (+t[1])
+                    return min < time
+
+               }else{
+                let t = elem.video_length.split(':')
+                let min = (+t[0])
+                return min < time
+               } 
+            })
+            userData.stored_youtube_searches = stored_youtube_searches
+            localStorage.setItem('userData', JSON.stringify(userData))
+            renderAllVideoResults(stored_youtube_searches)        
+            });
+        }
+        else if(stored_youtube_searches && !selection){
+            renderAllVideoResults(stored_youtube_searches)
+        }
+    
+
     
 
    
@@ -377,31 +430,7 @@ let renderAllNews = function (newCall) {
 
 
 
-function searchYoutube(){
-    if(youtube_search){
-        youtube_search = youtube_search.val()
-        youtube_search = encodeURIComponent(youtube_search)
-        const settings = {
-            "async": true,
-            "crossDomain": true,
-            "url": `https://youtube-search6.p.rapidapi.com/search/?query=${youtube_search}&number=10&country=us&lang=en`,
-            "method": "GET",
-            "headers": {
-                "X-RapidAPI-Key": "289a29c09emsh67b645d76a420f4p19e2ffjsn3ff56d782897",
-                "X-RapidAPI-Host": "youtube-search6.p.rapidapi.com"
-            }
-        };
-        
-        $.ajax(settings).done(function (response) {
-        
-            stored_youtube_searches = response.videos
-            userData.stored_youtube_searches = stored_youtube_searches
-            localStorage.setItem('userData', JSON.stringify(userData))
-            renderAllVideoResults(stored_youtube_searches)
-            
-        });
-    }
-}
+
 
 function renderAllVideoResults(stored_youtube_searches){
     let videoEl
@@ -455,6 +484,7 @@ function renderAllVideoResults(stored_youtube_searches){
         })
         let videoHeader = `<h4>Video Results</h4>`
     videoEl = videoHeader + videoTop + videoMid + videoEnd
+    $('#video-results').empty()
     $('#video-results').append(videoEl)
     
     }
@@ -462,7 +492,7 @@ function renderAllVideoResults(stored_youtube_searches){
 
 }
 
-$('')
+
 
 
 $(".results").on("click", "#video-button", function () {
